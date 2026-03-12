@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lawpath Onboarding Schedule Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --charcoal: #1E1E2E;
+  --charcoal-mid: #2C2C3E;
+  --charcoal-border: #3A3A50;
+  --purple: #6A2DD0;
+  --purple-light: #F1E9FF;
+  --purple-mid: #D4B8F5;
+  --black: #020314;
+  --green: #BFEF3F;
+  --green-light: #F0FAD0;
+  --orange: #F98258;
+  --orange-light: #FEF0EB;
+  --teal: #0E9E8E;
+  --teal-light: #E6F7F5;
+  --yellow-light: #FDFAE7;
+  --blue-light: #EEF0FF;
+  --blue: #818FFA;
+  --grey-light: #F5F5F7;
+  --grey-mid: #E8E8EC;
+  --grey-text: #888899;
+  --white: #ffffff;
+  --shadow: 0 2px 16px rgba(30,30,46,0.10);
+  --shadow-lg: 0 8px 40px rgba(30,30,46,0.22);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: #F5F4F8; color: var(--black); min-height: 100vh; }
+
+/* ── HEADER ── */
+.app-header { background: var(--charcoal); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; max-width: 1700px; margin: 0 auto; }
+.header-brand { display: flex; align-items: center; gap: 14px; }
+.logo-mark { width: 34px; height: 34px; background: var(--green); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px; color: var(--charcoal); flex-shrink: 0; }
+.header-title { color: white; font-size: 16px; font-weight: 600; }
+.header-sub { color: rgba(255,255,255,0.45); font-size: 12px; }
+.header-actions { display: flex; gap: 8px; align-items: center; }
+.btn { padding: 9px 18px; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-ghost { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.15); }
+.btn-ghost:hover { background: rgba(255,255,255,0.18); }
+.btn-green { background: var(--green); color: var(--charcoal); }
+.btn-green:hover { background: #d4f040; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(191,239,63,0.35); }
+
+/* ── META BAR ── */
+.meta-bar { background: white; border-bottom: 1px solid var(--grey-mid); padding: 14px 28px; }
+.meta-inner { max-width: 1700px; margin: 0 auto; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.meta-label { font-size: 11px; font-weight: 800; color: var(--grey-text); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; margin-right: 4px; }
+.meta-field { display: flex; flex-direction: column; gap: 2px; background: var(--grey-light); border-radius: 10px; padding: 6px 14px 7px; min-width: 170px; border: 1.5px solid transparent; transition: border-color 0.15s; }
+.meta-field:focus-within { border-color: var(--purple-mid); background: var(--purple-light); }
+.meta-field-label { font-size: 9.5px; font-weight: 700; color: var(--grey-text); text-transform: uppercase; letter-spacing: 0.5px; }
+.meta-field input { border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--black); font-weight: 600; width: 100%; outline: none; }
+.meta-field input::placeholder { color: #bbb; font-weight: 400; }
+
+/* ── MAIN ── */
+.main { max-width: 1700px; margin: 0 auto; padding: 20px 28px 48px; }
+
+/* ── INFO BAR ── */
+.info-bar { background: var(--purple-light); border: 1.5px solid var(--purple-mid); border-radius: 12px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; }
+.info-bar-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.info-bar-text { font-size: 13px; color: var(--purple); line-height: 1.5; }
+.info-bar-text strong { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+
+/* ── LEGEND ── */
+.legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; background: white; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--grey-mid); }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--black); }
+.legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── TABS ── */
+.week-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.week-tab { padding: 9px 22px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
+.week-tab.active { background: var(--charcoal); color: white; border-color: var(--charcoal); }
+.week-tab:not(.active) { background: white; color: var(--grey-text); border-color: var(--grey-mid); }
+.week-tab:not(.active):hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+/* ── SCHEDULE WRAP ── */
+.schedule-wrap { background: white; border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--grey-mid); }
+.schedule-scroll { overflow-x: auto; }
+
+.sched-table { width: 100%; border-collapse: collapse; min-width: 860px; table-layout: fixed; }
+.sched-table colgroup col:first-child { width: 58px; }
+
+.th-time { background: var(--charcoal); color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 700; padding: 8px 6px; text-align: center; }
+.th-day  { background: var(--charcoal); color: white; font-size: 13px; font-weight: 700; padding: 8px 8px; text-align: center; }
+
+.sched-table { width: 100%; border-collapse: collapse; min-width: 860px; table-layout: fixed; }
+.sched-table colgroup col:first-child { width: 64px; }
+
+.th-time { background: var(--charcoal); color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 700; padding: 10px 6px; text-align: center; }
+.th-day  { background: var(--charcoal); color: white; font-size: 13px; font-weight: 700; padding: 10px 8px; text-align: center; }
+
+.td-time-major {
+  background: #F0EFF5;
+  font-size: 9.5px; font-weight: 700; color: #999;
+  text-align: right; padding: 3px 6px 0 0;
+  border-right: 1px solid #d8d8e0;
+  border-bottom: 1px solid #d0cfda;
+  vertical-align: top;
+  white-space: nowrap;
+}
+.td-time-minor {
+  background: #F5F4F8;
+  border-right: 1px solid #d8d8e0;
+  border-bottom: 1px solid #eae9f0;
+}
+
+/* stronger top border on every major (30-min) row */
+tr.row-major .td-time-major,
+tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
+
+/* ── CELL BASE ── */
+.td-cell {
+  border-right: 1px solid var(--grey-mid);
+  border-bottom: 1px solid var(--grey-mid);
+  padding: 3px 6px;
+  vertical-align: top;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: filter 0.1s;
+  overflow: hidden;
+}
+.td-cell:last-child { border-right: none; }
+.td-cell:hover { filter: brightness(0.96); }
+.td-cell:hover .edit-hint { opacity: 1; }
+.td-cell[rowspan] { vertical-align: middle; }
+
+/* ── CELL COLOURS ──
+   • company onboarding = purple
+   • social = green
+   • manager = teal
+   • lunch = orange
+   • selfled = yellow (self-directed training)
+   • team = blue (team-run sessions, get calendar invite button)
+   • empty/editable = white dashed blue
+*/
+.c-company  { background: var(--purple-light); }
+.c-social   { background: var(--green-light); }
+.c-manager  { background: var(--teal-light); }
+.c-lunch    { background: var(--orange-light); }
+.c-selfled  { background: var(--yellow-light); outline: 1.5px dashed #e0d87a; outline-offset: -2px; }
+.c-team     { background: var(--blue-light); }
+.c-empty    { background: white; outline: 1.5px dashed #c8d0f8; outline-offset: -2px; }
+.c-editable { background: white; outline: 1.5px dashed #c8d0f8; outline-offset: -2px; }
+
+/* ── CELL CONTENT ── */
+.cell-badge { font-size: 7.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; padding: 1px 4px; border-radius: 3px; display: inline-block; margin-bottom: 2px; }
+.badge-company { background: var(--purple); color: white; }
+.badge-social  { background: #5a9e30; color: white; }
+.badge-manager { background: var(--teal); color: white; }
+.badge-lunch   { background: var(--orange); color: white; }
+.badge-team    { background: var(--blue); color: white; }
+.cell-text   { font-size: 10.5px; font-weight: 600; color: var(--black); line-height: 1.25; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+.cell-ranby  { font-size: 9.5px; color: var(--grey-text); margin-top: 1px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.cell-ph     { font-size: 10px; color: #b8bcd8; font-style: italic; font-weight: 400; }
+.cell-ph-grey { font-size: 10px; color: #c0bece; font-style: italic; font-weight: 400; }
+
+.edit-hint {
+  position: absolute; top: 3px; right: 4px; opacity: 0; transition: opacity 0.12s;
+  font-size: 9px; color: var(--purple); font-weight: 700;
+  background: var(--purple-light); border-radius: 3px; padding: 1px 4px;
+}
+
+/* ── CALENDAR INVITE BUTTON ── */
+.cal-btn {
+  position: absolute; bottom: 4px; right: 4px;
+  opacity: 0; transition: opacity 0.12s;
+  font-size: 9px; font-weight: 700; color: white;
+  background: var(--teal); border: none; border-radius: 3px;
+  padding: 2px 5px; cursor: pointer; line-height: 1.3;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
+  z-index: 2;
+}
+.cal-btn:hover { background: #0b8a7c; }
+.td-cell:hover .cal-btn { opacity: 1; }
+
+/* ── SPAN PICKER ── */
+.span-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; background: var(--grey-light); border-radius: 10px; padding: 10px 12px; }
+.span-label { font-size: 12px; font-weight: 600; color: var(--grey-text); white-space: nowrap; }
+.span-select { border: 1.5px solid var(--grey-mid); border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 6px 10px; outline: none; flex: 1; cursor: pointer; background: white; }
+.span-select:focus { border-color: var(--purple); }
+
+/* ── MODAL ── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(2,3,20,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.18s; backdrop-filter: blur(3px); }
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal { background: white; border-radius: 20px; padding: 26px; width: 430px; max-width: 96vw; box-shadow: var(--shadow-lg); transform: translateY(14px) scale(0.98); transition: transform 0.18s; }
+.modal-overlay.open .modal { transform: translateY(0) scale(1); }
+.modal-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; }
+.modal-title { font-size: 16px; font-weight: 700; color: var(--black); }
+.modal-subtitle { font-size: 11.5px; color: var(--grey-text); margin-top: 2px; }
+.modal-close { width: 28px; height: 28px; border-radius: 7px; border: none; background: var(--grey-light); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--grey-text); }
+.modal-close:hover { background: var(--grey-mid); }
+
+.type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 16px; }
+.type-btn { padding: 8px 10px; border-radius: 9px; border: 2px solid var(--grey-mid); font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.12s; background: white; color: var(--black); }
+.type-btn.sel { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+.type-btn:hover:not(.sel) { border-color: #bbb; }
+
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 11px; font-weight: 700; color: var(--grey-text); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 5px; display: block; }
+.form-input { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--grey-mid); font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--black); outline: none; transition: border-color 0.12s; }
+.form-input:focus { border-color: var(--purple); }
+
+.modal-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+.btn-clear  { background: var(--orange-light); color: var(--orange); border: none; flex-shrink: 0; }
+.btn-clear:hover  { background: #fde4d8; }
+.btn-save   { background: var(--purple); color: white; flex: 1; justify-content: center; }
+.btn-save:hover   { background: #5520b8; }
+.btn-invite { background: #4285F4; color: white; flex: 1; justify-content: center; border: none; }
+.btn-invite:hover { background: #3367d6; }
+
+/* ── TOAST ── */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--charcoal); color: white; padding: 10px 20px; border-radius: 9px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.22s; z-index: 300; pointer-events: none; box-shadow: 0 4px 18px rgba(0,0,0,0.25); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── PRINT STYLES ── */
+@media print {
+  .app-header, .meta-bar, .info-bar, .legend, .week-tabs, .toast, .modal-overlay, .edit-hint, .cal-btn, .no-print { display: none !important; }
+  body { background: white; font-family: Arial, sans-serif; }
+  .main { padding: 0; max-width: 100%; }
+  #week1-block, #week2-block { display: block !important; }
+  .print-week { page-break-after: always; width: 100%; }
+  .print-week:last-child { page-break-after: avoid; }
+  .schedule-scroll { overflow: visible; }
+  .sched-table { width: 100%; font-size: 7pt; }
+  .sched-table tr { height: 13pt; max-height: 13pt; overflow: hidden; }
+  .print-page-header { display: flex !important; align-items: center; justify-content: space-between; background: #1E1E2E; color: white; padding: 10pt 14pt; margin-bottom: 6pt; border-radius: 6pt; gap: 16pt; }
+  .print-page-header-left { display: flex; align-items: center; gap: 10pt; }
+  .print-page-header-logo { width: 28pt; height: 28pt; background: #6A2DD0; border-radius: 6pt; display: flex; align-items: center; justify-content: center; font-size: 14pt; font-weight: 900; color: white; flex-shrink: 0; }
+  .print-page-header-title { font-size: 13pt; font-weight: 800; letter-spacing: -0.3px; }
+  .print-page-header-sub { font-size: 8pt; opacity: 0.55; margin-top: 2pt; letter-spacing: 0.3px; text-transform: uppercase; }
+  .print-page-header-right { display: flex; gap: 8pt; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+  .print-pill { background: rgba(255,255,255,0.12); border-radius: 20pt; padding: 3pt 9pt; font-size: 8pt; font-weight: 600; white-space: nowrap; display: flex; align-items: center; gap: 4pt; }
+  .td-time-major { font-size: 6.5pt; padding: 2pt 4pt 0 0; }
+  .td-time-minor { }
+  .td-cell { padding: 2pt 3pt; overflow: hidden; }
+  .cell-badge { font-size: 6pt; padding: 1pt 3pt; margin-bottom: 1pt; }
+  .cell-text { font-size: 6.5pt; line-height: 1.2; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }
+  .cell-ranby { font-size: 5.5pt; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1pt; }
+  .cell-ph, .cell-ph-grey { display: none; }
+  .th-day { font-size: 8pt; padding: 5pt 4pt; }
+  .th-time { font-size: 7pt; padding: 5pt 4pt; }
+  .c-company  { background: #F1E9FF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-social   { background: #F0FAD0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-manager  { background: #E6F7F5 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-lunch    { background: #FEF0EB !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-selfled  { background: #FDFAE7 !important; outline: none !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-team     { background: #EEF0FF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .c-empty, .c-editable { background: white !important; outline: none !important; }
+  .badge-company { background: #6A2DD0 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge-social  { background: #5a9e30 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge-manager { background: #0E9E8E !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge-lunch   { background: #F98258 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .badge-team    { background: #818FFA !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .th-day, .th-time { background: #1E1E2E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-page-header { background: #1E1E2E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-legend { display: flex !important; gap: 10pt; flex-wrap: wrap; margin-bottom: 5pt; font-size: 7pt; }
+  .print-legend-item { display: flex; align-items: center; gap: 4pt; }
+  .print-legend-dot { width: 8pt; height: 8pt; border-radius: 2pt; flex-shrink: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .print-checklist { width: 100%; border-collapse: collapse; margin-top: 8pt; font-size: 7.5pt; page-break-inside: avoid; }
+  .print-checklist td { border: 1px solid #ddd; padding: 6pt 8pt; vertical-align: top; }
+  @page { size: A4 landscape; margin: 1cm 1.2cm; }
+
+  tr.row-major .td-time-major, tr.row-major .td-cell { border-top: 1px solid #ccc !important; }
+}
+
+.print-page-header { display: none; }
+/* Screen-side styles for PDF capture (html2canvas doesn't use @media print) */
+.print-page-header-left { display: flex; align-items: center; gap: 12px; }
+.print-page-header-logo { width: 36px; height: 36px; background: #6A2DD0; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 900; color: white; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+.print-page-header-title { font-size: 16px; font-weight: 800; color: white; font-family: 'DM Sans', sans-serif; }
+.print-page-header-sub { font-size: 10px; opacity: 0.6; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; color: white; font-family: 'DM Sans', sans-serif; }
+.print-page-header-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.print-pill { background: rgba(255,255,255,0.15); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 600; color: white; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+.print-legend { display: none; }
+.print-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+.print-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.print-checklist { display: none; }
+.print-week .schedule-wrap { box-shadow: none; border-radius: 0; border: none; }
+</style>
+</head>
+<body>
+
+<div class="app-header no-print">
+  <div class="header-inner">
+    <div class="header-brand">
+      <div class="logo-mark">L</div>
+      <div>
+        <div class="header-title">Onboarding Schedule Builder</div>
+        <div class="header-sub">Lawpath People &amp; Culture</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" onclick="resetWeek2()">↺ Reset Week 2</button>
+      <button class="btn btn-ghost" onclick="sharePlan()" id="share-btn">🔗 Share Plan</button>
+      <button class="btn btn-green" onclick="exportToPDF()">⬇ Export to PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="meta-bar no-print">
+  <div class="meta-inner">
+    <span class="meta-label">Employee Details</span>
+    <div class="meta-field">
+      <span class="meta-field-label">👤 Name</span>
+      <input type="text" id="empName" placeholder="e.g. Alex Johnson" oninput="updatePrintHeaders()"/>
+    </div>
+    <div class="meta-field">
+      <span class="meta-field-label">📅 Start Date</span>
+      <input type="date" id="startDate" oninput="updatePrintHeaders()"/>
+    </div>
+    <div class="meta-field">
+      <span class="meta-field-label">💼 Role / Team</span>
+      <input type="text" id="empRole" placeholder="e.g. Account Executive" oninput="updatePrintHeaders()"/>
+    </div>
+    <div class="meta-field">
+      <span class="meta-field-label">🧑‍💼 Manager</span>
+      <input type="text" id="managerName" placeholder="e.g. Carli Shields" oninput="updatePrintHeaders()"/>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Shared plan banner -->
+  <div id="shared-banner" class="no-print" style="display:none;align-items:center;gap:12px;
+    background:#e8f5e9;border:1.5px solid #a5d6a7;border-radius:10px;
+    padding:10px 16px;margin-bottom:14px;font-size:13px;color:#2e7d32;">
+    <span style="font-size:18px">✅</span>
+    <div style="flex:1;">
+      <strong>Shared plan loaded.</strong> You're editing a plan someone sent you.
+      Make your changes, then click <strong>🔗 Share Plan</strong> to send back a new link.
+    </div>
+    <button onclick="this.parentElement.style.display='none'"
+      style="background:none;border:none;font-size:16px;cursor:pointer;color:#2e7d32;padding:0 4px;">✕</button>
+  </div>
+
+  <div class="info-bar no-print">
+    <div class="info-bar-icon">✏️</div>
+    <div class="info-bar-text">
+      <strong>Click any cell to add, edit or move any session — including Lunch and Manager check-ins</strong>
+      Choose a type, name the session, set the duration. Time column shows 30-min markers; you can book in 15-min increments.
+    </div>
+  </div>
+
+  <div class="legend no-print">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div> Company Onboarding</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--green-light);border:1px solid #b0d890"></div> Social / Event</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--teal-light);border:1px solid var(--teal)"></div> Manager Check-in</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--orange-light);border:1px solid #f0b898"></div> Lunch / Break</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--yellow-light);border:1.5px dashed #e0d87a"></div> Self Led / Training</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--blue-light);border:1px solid var(--blue)"></div> Team Session</div>
+    <div class="legend-item"><div class="legend-dot" style="background:white;border:1.5px dashed #c8d0f8"></div> Empty — click to add</div>
+    <div class="legend-item" style="margin-left:auto;font-size:11px;color:var(--grey-text)">📅 Hover any session to add to Google Calendar</div>
+    <div class="legend-item" style="margin-left:auto;font-size:11px;color:var(--grey-text)">💡 Every cell is editable · 30-min markers on left · 15-min booking</div>
+  </div>
+
+  <div class="week-tabs no-print">
+    <button class="week-tab active" onclick="showWeek(1,this)">Week 1 – Company Onboarding</button>
+    <button class="week-tab" onclick="showWeek(2,this)">Week 2 – Team Onboarding ✏️</button>
+  </div>
+
+  <div id="week1-block" class="print-week">
+    <div class="print-page-header" id="print-header-1">
+      <div class="print-page-header-left">
+        <div class="print-page-header-logo">L</div>
+        <div>
+          <div class="print-page-header-title">Onboarding Schedule</div>
+          <div class="print-page-header-sub">Week 1 · Company Onboarding</div>
+        </div>
+      </div>
+      <div class="print-page-header-right" id="ph1-right"></div>
+    </div>
+    <div class="print-legend">
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#6A2DD0"></div> Company Onboarding</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#B8E88A"></div> Social</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#0E9E8E"></div> Manager Check-in</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#F98258"></div> Lunch / Break</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#FDFAE7;border:1px solid #ccc"></div> Self Led</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#EEF0FF;border:1px solid #818FFA"></div> Team Session</div>
+    </div>
+    <div class="schedule-wrap"><div class="schedule-scroll"><div id="week1-grid"></div></div></div>
+  </div>
+
+  <div id="week2-block" class="print-week" style="display:none">
+    <div class="print-page-header" id="print-header-2">
+      <div class="print-page-header-left">
+        <div class="print-page-header-logo">L</div>
+        <div>
+          <div class="print-page-header-title">Onboarding Schedule</div>
+          <div class="print-page-header-sub">Week 2 · Team Onboarding</div>
+        </div>
+      </div>
+      <div class="print-page-header-right" id="ph2-right"></div>
+    </div>
+    <div class="print-legend">
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#6A2DD0"></div> Company Onboarding</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#B8E88A"></div> Social</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#0E9E8E"></div> Manager Check-in</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#F98258"></div> Lunch / Break</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#FDFAE7;border:1px solid #ccc"></div> Self Led</div>
+      <div class="print-legend-item"><div class="print-legend-dot" style="background:#EEF0FF;border:1px solid #818FFA"></div> Team Session</div>
+    </div>
+    <div class="schedule-wrap"><div class="schedule-scroll"><div id="week2-grid"></div></div></div>
+  </div>
+
+</div>
+
+<!-- CALENDAR INVITE MODAL -->
+<div class="modal-overlay" id="cal-modal">
+  <div class="modal" style="width:400px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">📅 Send Calendar Invite</div>
+        <div class="modal-subtitle" id="cal-modal-day"></div>
+      </div>
+      <button class="modal-close" onclick="closeCalModal()">✕</button>
+    </div>
+
+    <div style="background:var(--grey-light);border-radius:10px;padding:12px 14px;margin-bottom:16px;">
+      <div style="font-size:12px;font-weight:700;color:var(--grey-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Session</div>
+      <div style="font-size:14px;font-weight:700;color:var(--black)" id="cal-modal-title"></div>
+      <div style="font-size:12px;color:var(--grey-text);margin-top:3px">🕐 <span id="cal-modal-time"></span> &nbsp;·&nbsp; 👤 <span id="cal-modal-ranby"></span></div>
+    </div>
+
+    <div id="cal-no-date-note" style="display:none;background:#FEF0EB;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--orange);">
+      ⚠️ Add a <strong>start date</strong> in the Employee Details bar above to generate date-specific calendar links.
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <a id="cal-gcal-btn" target="_blank" rel="noopener"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;
+               padding:11px 16px;border-radius:10px;background:#4285F4;color:white;
+               font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;
+               text-decoration:none;transition:background 0.15s;"
+        onmouseover="this.style.background='#3367d6'"
+        onmouseout="this.style.background='#4285F4'">
+        <svg width="16" height="16" viewBox="0 0 48 48" style="flex-shrink:0"><rect width="48" height="48" rx="4" fill="white"/><path d="M34 8H14a6 6 0 00-6 6v20a6 6 0 006 6h20a6 6 0 006-6V14a6 6 0 00-6-6z" fill="#4285F4"/><path d="M24 32a8 8 0 100-16 8 8 0 000 16z" fill="white"/><path d="M24 28a4 4 0 100-8 4 4 0 000 8z" fill="#4285F4"/></svg>
+        Open in Google Calendar
+      </a>
+    </div>
+
+    <div style="margin-top:14px;font-size:11px;color:var(--grey-text);line-height:1.5;text-align:center;">
+      Opens Google Calendar with session details pre-filled.<br>Add attendee emails before sending.
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title">Edit Session</div>
+        <div class="modal-subtitle" id="modal-subtitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="span-row" style="gap:12px;">
+      <div style="display:flex;align-items:center;gap:8px;flex:1;">
+        <span class="span-label">🕐 Start</span>
+        <select class="span-select" id="startSelect"></select>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex:1;">
+        <span class="span-label">⏱ Duration</span>
+        <select class="span-select" id="spanSelect"></select>
+      </div>
+    </div>
+    <div class="type-grid">
+      <button class="type-btn" data-type="company" onclick="selectType(this)">🟣 Company Onboarding</button>
+      <button class="type-btn" data-type="social"  onclick="selectType(this)">🟢 Social / Event</button>
+      <button class="type-btn" data-type="manager" onclick="selectType(this)">📋 Manager Check-in</button>
+      <button class="type-btn" data-type="lunch"   onclick="selectType(this)">🍽 Lunch / Break</button>
+      <button class="type-btn" data-type="selfled" onclick="selectType(this)">⬜ Self Led</button>
+      <button class="type-btn" data-type="team"    onclick="selectType(this)">👥 Team Session</button>
+      <button class="type-btn" data-type="empty"   onclick="selectType(this)" style="grid-column:span 2">✕ Clear slot</button>
+    </div>
+    <div id="session-fields">
+      <div class="form-group">
+        <label class="form-label">Session Name</label>
+        <input class="form-input" type="text" id="sessionName" placeholder="e.g. Welcome to Lawpath!" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Ran By / Notes</label>
+        <input class="form-input" type="text" id="ranByName" placeholder="e.g. Sarah Wu – Product Manager" />
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-clear" onclick="clearCell()">Clear slot</button>
+      <button class="btn btn-save" onclick="saveCell()">Save ✓</button>
+      <button class="btn btn-invite" id="save-invite-btn" onclick="saveCellAndInvite()" style="display:none">📅 Save & Invite</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="share-modal">
+  <div class="modal" style="width:480px">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title">🔗 Share this Plan</div>
+        <div class="modal-subtitle">Send this link to a colleague — they'll see your exact schedule</div>
+      </div>
+      <button class="modal-close" onclick="closeShareModal()">✕</button>
+    </div>
+
+    <div style="background:var(--grey-light);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;color:var(--grey-text);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Shareable Link</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input id="share-url-input" type="text" readonly
+          style="flex:1;font-size:11px;color:var(--black);background:white;border:1.5px solid var(--grey-mid);
+                 border-radius:7px;padding:8px 10px;font-family:'DM Sans',sans-serif;outline:none;
+                 white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" />
+        <button onclick="copyShareLink()" id="copy-btn"
+          style="padding:8px 14px;background:var(--purple);color:white;border:none;border-radius:7px;
+                 font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+                 transition:background 0.15s;flex-shrink:0;">
+          📋 Copy
+        </button>
+      </div>
+    </div>
+
+    <div style="background:var(--blue-light);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#4a50a0;line-height:1.6;">
+      <strong style="display:block;margin-bottom:4px;">How it works</strong>
+      The entire schedule is encoded in the link — no server, no login needed.<br>
+      Your colleague opens the link and sees your plan. They can edit it and share back a new link.
+    </div>
+
+    <div style="font-size:11px;color:var(--grey-text);line-height:1.6;">
+      ⚠️ The link only works when opened in the same HTML file.<br>
+      If you're hosting on GitHub Pages, share the GitHub Pages URL — not a local file path.
+    </div>
+
+    <div class="modal-actions" style="margin-top:16px;">
+      <button class="btn btn-save" onclick="closeShareModal()" style="justify-content:center;">Done</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Load LZ-string for compression (tiny ~9kb, no dependencies)
+(function(){
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.5.0/lz-string.min.js';
+  document.head.appendChild(s);
+})();
+// ── CONSTANTS ──────────────────────────────────────────────────────────────
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+
+// 15-min slots from 9:00 to 5:00 = 32 rows
+const TIMES = [
+  '9:00','9:15','9:30','9:45',
+  '10:00','10:15','10:30','10:45',
+  '11:00','11:15','11:30','11:45',
+  '12:00','12:15','12:30','12:45',
+  '1:00','1:15','1:30','1:45',
+  '2:00','2:15','2:30','2:45',
+  '3:00','3:15','3:30','3:45',
+  '4:00','4:15','4:30','4:45'
+];
+const NROWS = TIMES.length; // 32
+
+// Every 4th row is on the hour → show label
+function isMajorRow(r) { return r % 2 === 0; }
+
+// End time label for a row
+function endTime(r) { return TIMES[r+1] || '5:00'; }
+
+function durationLabel(rows, startRow) {
+  const mins = rows * 15;
+  const end  = TIMES[startRow + rows] || '5:00';
+  let timeStr;
+  if (mins < 60)        timeStr = `${mins} min`;
+  else if (mins === 60) timeStr = `1 hr`;
+  else if (mins % 60 === 0) timeStr = `${mins/60} hrs`;
+  else                  timeStr = `${Math.floor(mins/60)} hr ${mins%60} min`;
+  return `${timeStr}  (${TIMES[startRow]}–${end})`;
+}
+
+// ── EMOJIS for Company Onboarding sessions ─────────────────────────────────
+// We store a small map so each pre-filled session has its own emoji.
+// New sessions get a default emoji based on keywords.
+const SESSION_EMOJIS = {
+  'welcome':    '👋',
+  'history':    '🏛',
+  'vision':     '🚀',
+  'today':      '📊',
+  'clients':    '📊',
+  'impact':     '📊',
+  'direction':  '📊',
+  'how we work':'⚙️',
+  'grow':       '⚙️',
+  'who':        '🦁',
+  'zoo':        '🦁',
+  'product':    '💻',
+  'demo':       '💻',
+  'customer support':'🎧',
+  'support':    '🎧',
+  'marketing':  '📣',
+  'sales':      '💼',
+  'tax':        '📋',
+  'advisory':   '📋',
+  'digital':    '🔮',
+  'transformation':'🔮',
+  'legal':      '⚖️',
+  'people':     '❤️',
+  'culture':    '❤️',
+  'all hands':  '📢',
+  'lunch':      '🍽',
+  'tech':       '💻',
+  'setup':      '💻',
+  'check in':   '✅',
+  'check-in':   '✅',
+  'end of week':'✅',
+};
+
+function getSessionEmoji(session, type) {
+  if (!session) return '';
+  const lower = session.toLowerCase();
+  for (const [key, emoji] of Object.entries(SESSION_EMOJIS)) {
+    if (lower.includes(key)) return emoji;
+  }
+  // Fallback by type
+  const fallback = { company:'🟣', social:'🎉', manager:'📋', lunch:'🍽', team:'👥', selfled:'📖' };
+  return fallback[type] || '📌';
+}
+
+// ── STATE ──────────────────────────────────────────────────────────────────
+// { type, session, ranBy, span }   type:'spanned' for covered rows
+function makeEmpty() {
+  const d = Array.from({length:NROWS}, () =>
+    DAYS.map(() => ({type:'empty', session:'', ranBy:'', span:1}))
+  );
+  // Pre-fill every even row as span:2, every odd row as spanned
+  // so the grid starts as uniform 30-min empty blocks
+  for (let r = 0; r < NROWS; r += 2) {
+    for (let c = 0; c < 5; c++) {
+      d[r][c] = {type:'empty', session:'', ranBy:'', span:2};
+      if (r+1 < NROWS) d[r+1][c] = {type:'spanned'};
+    }
+  }
+  return d;
+}
+
+function makeWeek2() {
+  const d = makeEmpty(); // already has span-2 empty blocks
+  for (let c = 0; c < 5; c++) {
+    // Lunch 12:00–1:00 (rows 12–15, span 4)
+    d[12][c] = {type:'lunch', session:'Lunch', ranBy:'', span:4};
+    d[13][c] = {type:'spanned'};
+    d[14][c] = {type:'spanned'};
+    d[15][c] = {type:'spanned'};
+    // Manager 4:30–5:00 (rows 30–31, span 2)
+    d[30][c] = {type:'manager', session:'Manager End of Day Check In', ranBy:'', span:2};
+    d[31][c] = {type:'spanned'};
+  }
+  return repairEmpties(d);
+}
+
+// After placing sessions, repair all remaining rows into clean span-2 empty blocks
+function repairEmpties(d) {
+  for (let c = 0; c < 5; c++) {
+    let r = 0;
+    while (r < NROWS) {
+      const cell = d[r][c];
+      // Skip rows owned by a real session
+      if (cell.type !== 'empty' && cell.type !== 'editable' && cell.type !== 'spanned') {
+        r += (cell.span || 1);
+        continue;
+      }
+      // Skip spanned rows that belong to a real session above
+      if (cell.type === 'spanned') {
+        r++;
+        continue;
+      }
+      // This is an empty/editable row — find how many consecutive free rows follow
+      let freeCount = 0;
+      let scan = r;
+      while (scan < NROWS) {
+        const sc = d[scan][c];
+        if (sc.type === 'empty' || sc.type === 'editable') { freeCount++; scan++; }
+        else if (sc.type === 'spanned') {
+          // Check if owned by a real session
+          const owner = findSpanOwnerStatic(d, scan, c);
+          if (owner >= 0 && d[owner][c].type !== 'empty' && d[owner][c].type !== 'editable') break;
+          freeCount++; scan++;
+        }
+        else break;
+      }
+      // Fill the free rows as span-2 blocks
+      for (let i = 0; i < freeCount; i += 2) {
+        const row = r + i;
+        if (row >= NROWS) break;
+        const hasNext = (i + 1 < freeCount) && (row + 1 < NROWS);
+        d[row][c] = {type:'empty', session:'', ranBy:'', span: hasNext ? 2 : 1};
+        if (hasNext) d[row+1][c] = {type:'spanned'};
+      }
+      r += freeCount;
+    }
+  }
+  return d;
+}
+
+function findSpanOwnerStatic(d, spannedRow, col) {
+  for (let r = spannedRow - 1; r >= 0; r--) {
+    if (d[r][col].type !== 'spanned') {
+      if (r + (d[r][col].span||1) > spannedRow) return r;
+      break;
+    }
+  }
+  return -1;
+}
+
+function makeWeek1() {
+  const d = makeEmpty();
+  const s = (r,c,type,session,ranBy,span=2) => {
+    d[r][c]={type, session:session||'', ranBy:ranBy||'', span};
+    for (let i=1;i<span;i++) { if (r+i<NROWS) d[r+i][c]={type:'spanned'}; }
+  };
+
+  // ── MONDAY ──
+  s(0,0,'selfled','10am Start – no need to be in until 10:00','',4);       // 9:00–10:00
+  s(4,0,'company','Welcome! Show desk, get coffee, intro to office & manager','Clarissa Ishak – People & Culture',2); // 10:00–10:30
+  s(6,0,'company','Day One Session: Welcome to Lawpath! History, Vision & Company','Dom Woolrych – CEO & CO-FOUNDER',4); // 10:30–11:30
+  s(12,0,'social','Team Meet & Team Lunch','',4);                           // 12:00–1:00
+  s(24,0,'company','Day One Session: Lawpath Today – Clients, Impact & Direction','Tom Willis – CMO & CO-FOUNDER',4); // 3:00–4:00
+  s(30,0,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
+
+  // ── TUESDAY ──
+  s(0,1,'company','Day Two Session: How We Work and Grow at Lawpath','Carli Shields – People & Culture Manager',4); // 9:00–10:00
+  s(4,1,'company','Day Two Session: Who\'s who in the Zoo!','Clarissa Ishak – People & Culture Advisor',4); // 10:00–11:00
+  s(12,1,'lunch','Lunch','',4);                                             // 12:00–1:00
+  s(20,1,'company','Company Onboarding: Product at Lawpath – Live Demo & Walkthrough','Sarah Wu – Product Lead',4); // 2:00–3:00
+  s(30,1,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
+
+  // ── WEDNESDAY ──
+  s(4,2,'company','Company Onboarding: Customer Support at Lawpath','Lauren Johnston – Customer Support Manager',2);  // 10:00–10:30
+  s(6,2,'company','Company Onboarding: Marketing at Lawpath','Camilla Perez – Senior Marketing Manager',2);           // 10:30–11:00
+  s(12,2,'lunch','Lunch','',4);                                             // 12:00–1:00
+  s(30,2,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
+
+  // ── THURSDAY ──
+  s(4,3,'company','Company Onboarding: Sales at Lawpath','Steve Hoyle – Sales Director',2);          // 10:00–10:30
+  s(8,3,'company','Company Onboarding: Tax & Advisory at Lawpath','Tim Quinn – Head of Tax',2);      // 11:00–11:30
+  s(12,3,'lunch','Lunch','',4);                                             // 12:00–1:00
+  s(30,3,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
+
+  // ── FRIDAY ──
+  s(0,4,'social','All Hands','',2);                                         // 9:00–9:30
+  s(6,4,'company','Company Onboarding: Digital Transformation at Lawpath','Samuel Setoh – Digital Transformation Manager',2); // 10:30–11:00
+  s(10,4,'company','Company Onboarding: Legal at Lawpath','Olivia Dalton – Head of Legal',2);        // 11:30–12:00 (row 10=11:30)
+  s(12,4,'lunch','Lunch','',4);                                             // 12:00–1:00
+  s(20,4,'company','Company Onboarding: People & Culture at Lawpath','Natasha Hannah – Chief of Staff',2); // 2:00–2:30
+  s(28,4,'company','P&C End of Week 1 Check In','Clarissa Ishak – People & Culture Advisor',2);      // 4:00–4:30
+  s(30,4,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
+
+  return repairEmpties(d);
+}
+
+let scheduleData = { 1: makeWeek1(), 2: makeWeek2() };
+let editingCell  = null;
+let selectedType = 'company';
+
+// ── RENDER ─────────────────────────────────────────────────────────────────
+function renderGrid(week) {
+  const container = document.getElementById(`week${week}-grid`);
+  const data = scheduleData[week];
+
+  let html = `<table class="sched-table">`;
+  html += `<colgroup><col style="width:64px">${DAYS.map(()=>'<col>').join('')}</colgroup>`;
+  html += `<tr><th class="th-time">Time</th>${DAYS.map(d=>`<th class="th-day">${d}</th>`).join('')}</tr>`;
+
+  for (let r=0; r<NROWS; r++) {
+    const major = isMajorRow(r);
+    html += `<tr${major ? ' class="row-major"' : ''}>`;
+
+    if (major) {
+      html += `<td class="td-time-major">${TIMES[r]}</td>`;
+    } else {
+      html += `<td class="td-time-minor"></td>`;
+    }
+
+    for (let c=0; c<5; c++) {
+      const cell = data[r][c];
+      if (cell.type === 'spanned') continue;
+      html += buildCell(cell, week, r, c);
+    }
+    html += '</tr>';
+  }
+
+  html += '</table>';
+  container.innerHTML = html;
+}
+
+function buildCell(cell, week, r, c) {
+  const span = cell.span || 1;
+  const rs = span > 1 ? ` rowspan="${span}"` : '';
+
+  const typeClass = {
+    company:'c-company', social:'c-social', manager:'c-manager',
+    lunch:'c-lunch', selfled:'c-selfled', team:'c-team',
+    empty:'c-empty', editable:'c-empty'
+  }[cell.type] || 'c-empty';
+
+  const onclick = `onclick="openModal(${week},${r},${c})"`;
+
+  let inner = buildCellInner(cell);
+  inner += `<div class="edit-hint">Edit ✎</div>`;
+
+  // Calendar invite button for all filled sessions
+  const noCalTypes = new Set(['empty', 'editable', 'spanned']);
+  if (!noCalTypes.has(cell.type) && cell.session) {
+    inner += `<button class="cal-btn" onclick="openCalInvite(event,${week},${r},${c})">📅 Invite</button>`;
+  }
+
+  // Wrap content in absolute container so it never pushes row height
+  return `<td class="td-cell ${typeClass}"${rs} ${onclick}>${inner}</td>`;
+}
+
+function buildCellInner(cell) {
+  const type = cell.type;
+  const session = cell.session || '';
+  const ranBy   = cell.ranBy   || '';
+
+  // Empty / editable / selfled with no content — all show same placeholder
+  if ((type==='empty'||type==='editable'||type==='selfled') && !session) {
+    return `<div class="cell-ph">+ Add session…</div>`;
+  }
+
+  // Company Onboarding — badge + emoji + text
+  if (type==='company') {
+    const emoji = getSessionEmoji(session, type);
+    return `<span class="cell-badge badge-company">Onboarding</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Social
+  if (type==='social') {
+    const emoji = getSessionEmoji(session, type);
+    return `<span class="cell-badge badge-social">Social</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Manager
+  if (type==='manager') {
+    const emoji = getSessionEmoji(session, type);
+    return `<span class="cell-badge badge-manager">Manager</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session||'Manager End of Day Check In')}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Lunch
+  if (type==='lunch') {
+    const emoji = getSessionEmoji(session, type);
+    return `<span class="cell-badge badge-lunch">Break</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session||'Lunch')}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Team session
+  if (type==='team') {
+    return `<span class="cell-badge badge-team">Team</span><div class="cell-text">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Self led with custom name
+  if (type==='selfled') {
+    return `<div class="cell-text" style="color:#666;font-weight:500">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+  }
+
+  // Fallback for any other type with content
+  return `<div class="cell-text">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
+}
+
+function esc(s) {
+  if (!s) return '';
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── MODAL ──────────────────────────────────────────────────────────────────
+function openModal(week, row, col) {
+  editingCell = {week, row, col};
+  const cell = scheduleData[week][row][col];
+
+  document.getElementById('modal-title').textContent = DAYS[col];
+  document.getElementById('modal-subtitle').textContent = `${TIMES[row]} · Week ${week}`;
+
+  // Session name — clear default selfled/manager/lunch placeholders
+  const defaultNames = ['Manager End of Day Check In','Lunch'];
+  const showName = !defaultNames.includes(cell.session);
+  document.getElementById('sessionName').value = showName ? (cell.session||'') : '';
+  document.getElementById('ranByName').value = cell.ranBy || '';
+
+  // Build START TIME dropdown — all rows in this column that aren't spanned by another cell
+  const startSel = document.getElementById('startSelect');
+  startSel.innerHTML = '';
+  const data = scheduleData[week];
+  for (let r = 0; r < NROWS; r++) {
+    const c = data[r][col];
+    // Skip rows that are spanned by a *different* cell (not this one)
+    if (c.type === 'spanned') {
+      // Check if this spanned row belongs to our cell
+      const owner = findSpanOwner(data, r, col);
+      if (owner !== row) continue;
+    }
+    const opt = document.createElement('option');
+    opt.value = r;
+    opt.textContent = TIMES[r];
+    if (r === row) opt.selected = true;
+    startSel.appendChild(opt);
+  }
+
+  // Rebuild duration when start changes
+  startSel.onchange = () => rebuildDurationSelect(week, parseInt(startSel.value), col, 1);
+
+  // Build DURATION dropdown
+  rebuildDurationSelect(week, row, col, cell.span||1);
+
+  // Current type
+  const t = (cell.type==='editable'||cell.type==='empty') ? 'company' : cell.type;
+  selectedType = t;
+  updateTypeButtons();
+  updateFieldVis();
+
+  document.getElementById('modal').classList.add('open');
+  setTimeout(()=>document.getElementById('sessionName').focus(), 180);
+}
+
+function findSpanOwner(data, spannedRow, col) {
+  // Walk up to find the cell that owns this spanned row
+  for (let r = spannedRow - 1; r >= 0; r--) {
+    const c = data[r][col];
+    if (c.type !== 'spanned') {
+      // Check if its span covers spannedRow
+      if (r + (c.span||1) > spannedRow) return r;
+      break;
+    }
+  }
+  return -1;
+}
+
+function rebuildDurationSelect(week, startRow, col, currentSpan) {
+  const select = document.getElementById('spanSelect');
+  select.innerHTML = '';
+
+  // Always offer 30-min increments up to 4 hours (half day), regardless of what's in the grid.
+  // Saving will handle clearing any cells that get overwritten.
+  const STEP    = 2;  // 2 rows = 30 min
+  const MAX_ROWS = 16; // 16 rows = 4 hours
+
+  // Cap at rows remaining in the day from this start
+  const rowsLeft = NROWS - startRow;
+  const maxSpan  = Math.min(MAX_ROWS, rowsLeft % STEP === 0 ? rowsLeft : rowsLeft - (rowsLeft % STEP));
+
+  for (let sp = STEP; sp <= maxSpan; sp += STEP) {
+    const opt = document.createElement('option');
+    opt.value = sp;
+    opt.textContent = durationLabel(sp, startRow);
+    if (sp === currentSpan || (currentSpan < STEP && sp === STEP)) opt.selected = true;
+    select.appendChild(opt);
+  }
+
+  // Fallback — if nothing selected, pick first
+  if (select.selectedIndex === -1 && select.options.length > 0) {
+    select.options[0].selected = true;
+  }
+}
+
+function calcMaxSpan(week, row, col, currentSpan) {
+  const data = scheduleData[week];
+  // origRow is the cell being edited (from editingCell)
+  const origRow = editingCell ? editingCell.row : row;
+  const origSpan = editingCell ? (data[origRow]?.[col]?.span || 1) : currentSpan;
+
+  let max = 1;
+  for (let r = row + 1; r < NROWS; r++) {
+    const c = data[r][col];
+    // Rows that belong to the *original* cell's span are free to use
+    if (r >= origRow && r < origRow + origSpan) { max = r - row + 1; continue; }
+    // Spanned by another cell — stop
+    if (c.type === 'spanned') break;
+    // Anything else is available
+    max = r - row + 1;
+  }
+  return Math.min(max, NROWS - row);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  editingCell = null;
+}
+
+function selectType(btn) {
+  selectedType = btn.dataset.type;
+  updateTypeButtons();
+  updateFieldVis();
+  document.getElementById('sessionName').focus();
+}
+
+function updateTypeButtons() {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('sel', b.dataset.type===selectedType));
+}
+
+function updateFieldVis() {
+  const f = document.getElementById('session-fields');
+  const hide = selectedType === 'empty';
+  f.style.opacity = hide ? '0.3' : '1';
+  f.style.pointerEvents = hide ? 'none' : '';
+
+  const namePH = {
+    company: 'e.g. Welcome to Lawpath! History & Vision',
+    social:  'e.g. Team Lunch / All Hands',
+    manager: 'e.g. Manager End of Day Check In',
+    lunch:   'e.g. Lunch',
+    selfled: 'e.g. Salesforce Training (optional)',
+    team:    'e.g. Product Demo & Walkthrough',
+  };
+  document.getElementById('sessionName').placeholder = namePH[selectedType] || 'Session name';
+  document.getElementById('ranByName').placeholder = selectedType==='selfled' ? 'e.g. Self Led (optional)' : 'e.g. Sarah Wu – Product Manager';
+
+  // Show "Save & Invite" for all session types except Clear
+  const inviteBtn = document.getElementById('save-invite-btn');
+  inviteBtn.style.display = selectedType === 'empty' ? 'none' : 'inline-flex';
+}
+
+function saveCell() {
+  if (!editingCell) return;
+  const {week, col} = editingCell;
+  const origRow = editingCell.row;
+  const data = scheduleData[week];
+  const session  = document.getElementById('sessionName').value.trim();
+  const ranBy    = document.getElementById('ranByName').value.trim();
+  const newSpan  = parseInt(document.getElementById('spanSelect').value) || 2;
+  const newRow   = parseInt(document.getElementById('startSelect').value);
+  const oldSpan  = data[origRow][col].span || 2;
+
+  // Helper: restore a range of rows back to uniform span-2 empty blocks
+  function restoreEmpty(startR, count) {
+    for (let i = 0; i < count; i++) {
+      const r = startR + i;
+      if (r >= NROWS) break;
+      data[r][col] = {type:'empty', session:'', ranBy:'', span:1}; // temp
+    }
+    // Re-pair into span-2 blocks on even-offset rows within the range
+    for (let i = 0; i < count; i += 2) {
+      const r = startR + i;
+      if (r >= NROWS) break;
+      const hasNext = (r + 1 < NROWS) && (r + 1 < startR + count);
+      data[r][col] = {type:'empty', session:'', ranBy:'', span: hasNext ? 2 : 1};
+      if (hasNext) data[r+1][col] = {type:'spanned'};
+    }
+  }
+
+  // 1. Clear old position
+  restoreEmpty(origRow, oldSpan);
+
+  // 2. Clear cells the new span will overwrite (walk row by row, handle spanned owners)
+  let r = newRow;
+  while (r < newRow + newSpan && r < NROWS) {
+    const cell = data[r][col];
+    if (cell.type === 'spanned') {
+      // Find its owner and clear the whole span
+      let owner = r - 1;
+      while (owner >= 0 && data[owner][col].type === 'spanned') owner--;
+      const ownerSpan = data[owner]?.[col]?.span || 1;
+      restoreEmpty(owner, ownerSpan);
+      r = owner + ownerSpan;
+    } else {
+      const span = cell.span || 1;
+      restoreEmpty(r, span);
+      r += span;
+    }
+  }
+
+  // 3. Write the new cell
+  const sessionName = selectedType === 'manager' ? (session || 'Manager End of Day Check In')
+                    : selectedType === 'lunch'   ? (session || 'Lunch')
+                    : session;
+
+  if (selectedType === 'empty') {
+    restoreEmpty(newRow, newSpan);
+  } else {
+    data[newRow][col] = {type: selectedType, session: sessionName, ranBy, span: newSpan};
+    for (let i = 1; i < newSpan; i++) {
+      if (newRow + i < NROWS) data[newRow + i][col] = {type:'spanned'};
+    }
+  }
+
+  editingCell.row = newRow;
+  closeModal();
+  renderGrid(week);
+  showToast('Session saved ✓');
+}
+
+function saveCellAndInvite() {
+  if (!editingCell) return;
+  const {week, row, col} = editingCell;
+
+  // Save first
+  saveCell(); // closes modal, re-renders grid
+
+  // Then open Google Calendar with the now-saved cell data
+  const cell = scheduleData[week][row][col];
+  const startDateRaw = document.getElementById('startDate').value;
+
+  let sessionDate = null;
+  if (startDateRaw) {
+    const base = new Date(startDateRaw);
+    sessionDate = new Date(base);
+    sessionDate.setDate(base.getDate() + (week - 1) * 7 + col);
+  }
+
+  function localParseHHMM(t) {
+    const p = t.split(':');
+    let h = parseInt(p[0]);
+    const m = parseInt(p[1]||0);
+    if (h >= 1 && h <= 8) h += 12;
+    return { h, m };
+  }
+  const startT = localParseHHMM(TIMES[row]);
+  const endRow = row + (cell.span || 1);
+  const endT   = localParseHHMM(endRow < TIMES.length ? TIMES[endRow] : '17:00');
+
+  function localToGCalDT(date, hh, mm) {
+    if (!date) return '';
+    const y = date.getFullYear();
+    const mo = String(date.getMonth()+1).padStart(2,'0');
+    const d  = String(date.getDate()).padStart(2,'0');
+    return `${y}${mo}${d}T${String(hh).padStart(2,'0')}${String(mm).padStart(2,'0')}00`;
+  }
+
+  const details = cell.ranBy ? `Hosted by: ${cell.ranBy}` : '';
+
+  if (sessionDate) {
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: cell.session,
+      dates: `${localToGCalDT(sessionDate, startT.h, startT.m)}/${localToGCalDT(sessionDate, endT.h, endT.m)}`,
+      details,
+    });
+    window.open(`https://calendar.google.com/calendar/render?${params.toString()}`, '_blank');
+  } else {
+    showToast('Session saved — add a start date to generate calendar link');
+  }
+}
+
+function clearCell() {
+  if (!editingCell) return;
+  const {week, row, col} = editingCell;
+  const data = scheduleData[week];
+  const oldSpan = data[row][col].span || 2;
+  // Restore as span-2 empty blocks
+  for (let i = 0; i < oldSpan; i++) {
+    if (row+i < NROWS) data[row+i][col] = {type:'empty', session:'', ranBy:'', span:1};
+  }
+  for (let i = 0; i < oldSpan; i += 2) {
+    const r = row + i;
+    if (r >= NROWS) break;
+    const hasNext = (r+1 < NROWS) && (i+1 < oldSpan);
+    data[r][col] = {type:'empty', session:'', ranBy:'', span: hasNext ? 2 : 1};
+    if (hasNext) data[r+1][col] = {type:'spanned'};
+  }
+  closeModal();
+  renderGrid(week);
+  showToast('Slot cleared');
+}
+
+// ── WEEK TOGGLE ────────────────────────────────────────────────────────────
+function showWeek(week, btn) {
+  document.getElementById('week1-block').style.display = week===1 ? 'block' : 'none';
+  document.getElementById('week2-block').style.display = week===2 ? 'block' : 'none';
+  document.querySelectorAll('.week-tab').forEach((t,i) => t.classList.toggle('active', i===week-1));
+}
+
+function resetWeek2() {
+  if (!confirm('Reset Week 2 to blank template? This will clear all your changes.')) return;
+  scheduleData[2] = makeWeek2();
+  renderGrid(2);
+  showToast('Week 2 reset to blank template');
+}
+
+// ── PRINT HEADERS ──────────────────────────────────────────────────────────
+function updatePrintHeaders() {
+  const name    = document.getElementById('empName').value    || '';
+  const dateRaw = document.getElementById('startDate').value;
+  const role    = document.getElementById('empRole').value    || '';
+  const mgr     = document.getElementById('managerName').value || '';
+
+  const dateStr = dateRaw
+    ? new Date(dateRaw).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})
+    : '';
+
+  const pills = [
+    name    ? `<span class="print-pill">👤 ${name}</span>` : '',
+    role    ? `<span class="print-pill">💼 ${role}</span>` : '',
+    mgr     ? `<span class="print-pill">🧑‍💼 Manager: ${mgr}</span>` : '',
+    dateStr ? `<span class="print-pill">📅 Starts ${dateStr}</span>` : '',
+  ].filter(Boolean).join('');
+
+  document.getElementById('ph1-right').innerHTML = pills;
+  document.getElementById('ph2-right').innerHTML = pills;
+}
+
+// ── CALENDAR HELPERS ───────────────────────────────────────────────────────
+// TIMES uses 12-hr style (1:00 = 1pm). Convert to 24-hr for calendar URLs.
+function parseHHMM(t) {
+  const p = t.split(':');
+  let h = parseInt(p[0]);
+  const m = parseInt(p[1]||0);
+  // 1–8 = afternoon (13:00–20:00), 9–12 = morning (09:00–12:00)
+  if (h >= 1 && h <= 8) h += 12;
+  return { h, m };
+}
+function toGCalDT(date, hh, mm) {
+  if (!date) return '';
+  const y  = date.getFullYear();
+  const mo = String(date.getMonth()+1).padStart(2,'0');
+  const d  = String(date.getDate()).padStart(2,'0');
+  return `${y}${mo}${d}T${String(hh).padStart(2,'0')}${String(mm).padStart(2,'0')}00`;
+}
+function calDates(row, span) {
+  const startT = parseHHMM(TIMES[row]);
+  const endRow = row + (span || 1);
+  const endT   = parseHHMM(endRow < TIMES.length ? TIMES[endRow] : '17:00');
+  return { startT, endT };
+}
+
+// ── CALENDAR INVITE ────────────────────────────────────────────────────────
+function openCalInvite(evt, week, row, col) {
+  evt.stopPropagation();
+
+  const cell = scheduleData[week][row][col];
+  const startDateRaw = document.getElementById('startDate').value;
+
+  // Work out the actual calendar date
+  let sessionDate = null;
+  if (startDateRaw) {
+    const base = new Date(startDateRaw);
+    sessionDate = new Date(base);
+    sessionDate.setDate(base.getDate() + (week - 1) * 7 + col);
+  }
+
+  const { startT, endT } = calDates(row, cell.span);
+  const endRow = row + (cell.span || 1);
+
+  const title   = cell.session;
+  const details = cell.ranBy ? `Hosted by: ${cell.ranBy}` : '';
+  const dayLabel = sessionDate
+    ? sessionDate.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
+    : `${DAYS[col]}, Week ${week}`;
+  const timeLabel = `${TIMES[row]}–${endRow < TIMES.length ? TIMES[endRow] : '5:00'}`;
+
+  // Build Google Calendar URL
+  let gcalUrl = '';
+  if (sessionDate) {
+    const params = new URLSearchParams({
+      action: 'TEMPLATE',
+      text: title,
+      dates: `${toGCalDT(sessionDate, startT.h, startT.m)}/${toGCalDT(sessionDate, endT.h, endT.m)}`,
+      details: details,
+    });
+    gcalUrl = `https://calendar.google.com/calendar/render?${params.toString()}`;
+  }
+
+  document.getElementById('cal-modal-day').textContent   = dayLabel;
+  document.getElementById('cal-modal-time').textContent  = timeLabel;
+  document.getElementById('cal-modal-title').textContent = cell.session;
+  document.getElementById('cal-modal-ranby').textContent = cell.ranBy || '—';
+
+  const gcalBtn = document.getElementById('cal-gcal-btn');
+  if (gcalUrl) {
+    gcalBtn.href = gcalUrl;
+    gcalBtn.style.opacity = '1';
+    gcalBtn.style.pointerEvents = '';
+    gcalBtn.title = '';
+  } else {
+    gcalBtn.href = '#';
+    gcalBtn.style.opacity = '0.45';
+    gcalBtn.style.pointerEvents = 'none';
+    gcalBtn.title = 'Enter a start date in Employee Details to generate a date-specific link';
+  }
+
+  document.getElementById('cal-no-date-note').style.display = startDateRaw ? 'none' : 'block';
+  document.getElementById('cal-modal').classList.add('open');
+}
+
+function closeCalModal() {
+  document.getElementById('cal-modal').classList.remove('open');
+}
+
+// ── PDF EXPORT ─────────────────────────────────────────────────────────────
+function exportToPDF() {
+  updatePrintHeaders();
+
+  const empName = document.getElementById('empName').value || 'Onboarding_Schedule';
+
+  // Show print-only elements
+  document.querySelectorAll('.print-page-header').forEach(el => {
+    el.style.display = 'flex';
+    el.style.background = '#1E1E2E';
+    el.style.color = 'white';
+    el.style.padding = '12px 16px';
+    el.style.marginBottom = '8px';
+    el.style.borderRadius = '8px';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'space-between';
+  });
+  document.querySelectorAll('.print-legend').forEach(el => {
+    el.style.display = 'flex';
+    el.style.gap = '16px';
+    el.style.flexWrap = 'wrap';
+    el.style.marginBottom = '8px';
+    el.style.padding = '4px 0';
+  });
+  document.getElementById('week1-block').style.display = 'block';
+  document.getElementById('week2-block').style.display = 'block';
+
+  showToast('Generating PDF…');
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+  const pageW = 297;
+  const pageH = 210;
+  const margin = 8;
+
+  const weeks = [
+    document.getElementById('week1-block'),
+    document.getElementById('week2-block')
+  ];
+
+  function captureWeek(idx) {
+    if (idx >= weeks.length) {
+      pdf.save(`Lawpath_Onboarding_${empName.replace(/\s+/g,'_')}.pdf`);
+      // Restore
+      document.querySelectorAll('.print-page-header').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.print-legend').forEach(el => el.style.display = 'none');
+      const compactStyle = document.getElementById('pdf-compact-style');
+      if (compactStyle) compactStyle.remove();
+      const w = document.querySelector('.week-tab.active')?.textContent.includes('2') ? 2 : 1;
+      document.getElementById('week1-block').style.display = w === 1 ? 'block' : 'none';
+      document.getElementById('week2-block').style.display = w === 2 ? 'block' : 'none';
+      showToast('PDF downloaded ✓');
+      return;
+    }
+
+    const el = weeks[idx];
+    html2canvas(el, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: el.scrollWidth,
+      windowWidth: el.scrollWidth,
+      x: 0,
+      y: 0,
+      scrollX: 0,
+      scrollY: 0,
+    }).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const availW = pageW - margin * 2;
+      const availH = pageH - margin * 2;
+      // Always scale to fit the available area — whichever dimension is the constraint
+      const scaleByW = availW / (canvas.width / 2);
+      const scaleByH = availH / (canvas.height / 2);
+      const scale = Math.min(scaleByW, scaleByH);
+      const finalW = (canvas.width / 2) * scale;
+      const finalH = (canvas.height / 2) * scale;
+      const xOff = margin + (availW - finalW) / 2;
+      const yOff = margin + (availH - finalH) / 2;
+
+      if (idx > 0) pdf.addPage('a4', 'landscape');
+      pdf.addImage(imgData, 'PNG', xOff, yOff, finalW, finalH);
+      captureWeek(idx + 1);
+    });
+  }
+
+  // Temporarily compact row heights for PDF capture
+  const styleEl = document.createElement('style');
+  styleEl.id = 'pdf-compact-style';
+  styleEl.textContent = `
+    .sched-table tr { line-height: 1 !important; }
+    .td-time-major, .td-time-minor { height: 18px !important; font-size: 8px !important; }
+    .td-cell { padding: 2px 4px !important; }
+    .cell-badge { font-size: 7px !important; padding: 1px 3px !important; margin-bottom: 1px !important; }
+    .cell-text { font-size: 9px !important; line-height: 1.2 !important; }
+    .cell-ranby { font-size: 8px !important; }
+    .cell-ph, .cell-ph-grey { font-size: 8px !important; }
+    .th-day, .th-time { padding: 6px 4px !important; font-size: 11px !important; }
+  `;
+  document.head.appendChild(styleEl);
+
+  setTimeout(() => captureWeek(0), 200);
+}
+
+// ── TOAST ──────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── KEYBOARD ───────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape') { closeModal(); closeCalModal(); }
+  if (e.key==='Enter' && document.getElementById('modal').classList.contains('open')) saveCell();
+});
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target===this) closeModal();
+});
+document.getElementById('cal-modal').addEventListener('click', function(e) {
+  if (e.target===this) closeCalModal();
+});
+
+// ── SHARE / URL STATE ──────────────────────────────────────────────────────
+function sharePlan() {
+  const state = {
+    v: 1, // version, for future-proofing
+    emp: {
+      name:    document.getElementById('empName').value,
+      date:    document.getElementById('startDate').value,
+      role:    document.getElementById('empRole').value,
+      manager: document.getElementById('managerName').value,
+    },
+    data: scheduleData
+  };
+
+  const json       = JSON.stringify(state);
+  const compressed = LZString.compressToEncodedURIComponent(json);
+  const url        = `${location.origin}${location.pathname}#plan=${compressed}`;
+
+  document.getElementById('share-url-input').value = url;
+  document.getElementById('share-modal').classList.add('open');
+}
+
+function copyShareLink() {
+  const input = document.getElementById('share-url-input');
+  input.select();
+  input.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(input.value).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copied!';
+    btn.style.background = '#2ecc71';
+    setTimeout(() => {
+      btn.textContent = '📋 Copy';
+      btn.style.background = 'var(--purple)';
+    }, 2000);
+  }).catch(() => {
+    // fallback for non-https
+    document.execCommand('copy');
+    showToast('Link copied ✓');
+  });
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').classList.remove('open');
+}
+
+function restoreFromURL() {
+  const hash = location.hash;
+  if (!hash.startsWith('#plan=')) return false;
+
+  // Wait for LZString to load if needed
+  function tryRestore(attempt) {
+    if (typeof LZString === 'undefined') {
+      if (attempt > 20) { showToast('Could not load shared plan'); return; }
+      setTimeout(() => tryRestore(attempt + 1), 150);
+      return;
+    }
+    try {
+      const compressed = hash.slice(6); // strip '#plan='
+      const json       = LZString.decompressFromEncodedURIComponent(compressed);
+      const state      = JSON.parse(json);
+
+      if (state.emp) {
+        document.getElementById('empName').value    = state.emp.name    || '';
+        document.getElementById('startDate').value  = state.emp.date    || '';
+        document.getElementById('empRole').value    = state.emp.role    || '';
+        document.getElementById('managerName').value= state.emp.manager || '';
+      }
+      if (state.data) {
+        scheduleData = state.data;
+      }
+
+      renderGrid(1);
+      renderGrid(2);
+      updatePrintHeaders();
+
+      // Show a banner that this is a shared plan
+      const banner = document.getElementById('shared-banner');
+      if (banner) banner.style.display = 'flex';
+
+      showToast('✓ Shared plan loaded!');
+      return true;
+    } catch(e) {
+      showToast('Could not restore shared plan');
+      return false;
+    }
+  }
+  tryRestore(0);
+  return true;
+}
+
+document.getElementById('share-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeShareModal();
+});
+
+
+renderGrid(1);
+renderGrid(2);
+updatePrintHeaders();
+// Restore shared plan from URL hash if present
+restoreFromURL();
+</script>
+</body>
+</html>
