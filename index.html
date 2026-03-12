@@ -35,7 +35,7 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: #F5F4F8; color: var(--black); min-height: 100vh; }
-
+ 
 /* ── HEADER ── */
 .app-header { background: var(--charcoal); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.3); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 28px; max-width: 1700px; margin: 0 auto; }
@@ -49,7 +49,7 @@ body { font-family: 'DM Sans', sans-serif; background: #F5F4F8; color: var(--bla
 .btn-ghost:hover { background: rgba(255,255,255,0.18); }
 .btn-green { background: var(--green); color: var(--charcoal); }
 .btn-green:hover { background: #d4f040; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(191,239,63,0.35); }
-
+ 
 /* ── META BAR ── */
 .meta-bar { background: white; border-bottom: 1px solid var(--grey-mid); padding: 14px 28px; }
 .meta-inner { max-width: 1700px; margin: 0 auto; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
@@ -59,44 +59,44 @@ body { font-family: 'DM Sans', sans-serif; background: #F5F4F8; color: var(--bla
 .meta-field-label { font-size: 9.5px; font-weight: 700; color: var(--grey-text); text-transform: uppercase; letter-spacing: 0.5px; }
 .meta-field input { border: none; background: none; font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--black); font-weight: 600; width: 100%; outline: none; }
 .meta-field input::placeholder { color: #bbb; font-weight: 400; }
-
+ 
 /* ── MAIN ── */
 .main { max-width: 1700px; margin: 0 auto; padding: 20px 28px 48px; }
-
+ 
 /* ── INFO BAR ── */
 .info-bar { background: var(--purple-light); border: 1.5px solid var(--purple-mid); border-radius: 12px; padding: 12px 18px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 12px; }
 .info-bar-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
 .info-bar-text { font-size: 13px; color: var(--purple); line-height: 1.5; }
 .info-bar-text strong { display: block; font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
-
+ 
 /* ── LEGEND ── */
 .legend { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; background: white; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--grey-mid); }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--black); }
 .legend-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
-
+ 
 /* ── TABS ── */
 .week-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
 .week-tab { padding: 9px 22px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
 .week-tab.active { background: var(--charcoal); color: white; border-color: var(--charcoal); }
 .week-tab:not(.active) { background: white; color: var(--grey-text); border-color: var(--grey-mid); }
 .week-tab:not(.active):hover { border-color: var(--charcoal); color: var(--charcoal); }
-
+ 
 /* ── SCHEDULE WRAP ── */
 .schedule-wrap { background: white; border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; border: 1px solid var(--grey-mid); }
 .schedule-scroll { overflow-x: auto; }
-
+ 
 .sched-table { width: 100%; border-collapse: collapse; min-width: 860px; table-layout: fixed; }
 .sched-table colgroup col:first-child { width: 58px; }
-
+ 
 .th-time { background: var(--charcoal); color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 700; padding: 8px 6px; text-align: center; }
 .th-day  { background: var(--charcoal); color: white; font-size: 13px; font-weight: 700; padding: 8px 8px; text-align: center; }
-
+ 
 .sched-table { width: 100%; border-collapse: collapse; min-width: 860px; table-layout: fixed; }
 .sched-table colgroup col:first-child { width: 64px; }
-
+ 
 .th-time { background: var(--charcoal); color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 700; padding: 10px 6px; text-align: center; }
 .th-day  { background: var(--charcoal); color: white; font-size: 13px; font-weight: 700; padding: 10px 8px; text-align: center; }
-
+ 
 .td-time-major {
   background: #F0EFF5;
   font-size: 9.5px; font-weight: 700; color: #999;
@@ -111,11 +111,11 @@ body { font-family: 'DM Sans', sans-serif; background: #F5F4F8; color: var(--bla
   border-right: 1px solid #d8d8e0;
   border-bottom: 1px solid #eae9f0;
 }
-
+ 
 /* stronger top border on every major (30-min) row */
 tr.row-major .td-time-major,
 tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
-
+ 
 /* ── CELL BASE ── */
 .td-cell {
   border-right: 1px solid var(--grey-mid);
@@ -132,7 +132,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 .td-cell:hover { filter: brightness(0.96); }
 .td-cell:hover .edit-hint { opacity: 1; }
 .td-cell[rowspan] { vertical-align: middle; }
-
+ 
 /* ── CELL COLOURS ──
    • company onboarding = purple
    • social = green
@@ -150,7 +150,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 .c-team     { background: var(--blue-light); }
 .c-empty    { background: white; outline: 1.5px dashed #c8d0f8; outline-offset: -2px; }
 .c-editable { background: white; outline: 1.5px dashed #c8d0f8; outline-offset: -2px; }
-
+ 
 /* ── CELL CONTENT ── */
 .cell-badge { font-size: 7.5px; font-weight: 800; letter-spacing: 0.4px; text-transform: uppercase; padding: 1px 4px; border-radius: 3px; display: inline-block; margin-bottom: 2px; }
 .badge-company { background: var(--purple); color: white; }
@@ -162,13 +162,13 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 .cell-ranby  { font-size: 9.5px; color: var(--grey-text); margin-top: 1px; line-height: 1.2; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .cell-ph     { font-size: 10px; color: #b8bcd8; font-style: italic; font-weight: 400; }
 .cell-ph-grey { font-size: 10px; color: #c0bece; font-style: italic; font-weight: 400; }
-
+ 
 .edit-hint {
   position: absolute; top: 3px; right: 4px; opacity: 0; transition: opacity 0.12s;
   font-size: 9px; color: var(--purple); font-weight: 700;
   background: var(--purple-light); border-radius: 3px; padding: 1px 4px;
 }
-
+ 
 /* ── CALENDAR INVITE BUTTON ── */
 .cal-btn {
   position: absolute; bottom: 4px; right: 4px;
@@ -183,13 +183,13 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 }
 .cal-btn:hover { background: #0b8a7c; }
 .td-cell:hover .cal-btn { opacity: 1; }
-
+ 
 /* ── SPAN PICKER ── */
 .span-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; background: var(--grey-light); border-radius: 10px; padding: 10px 12px; }
 .span-label { font-size: 12px; font-weight: 600; color: var(--grey-text); white-space: nowrap; }
 .span-select { border: 1.5px solid var(--grey-mid); border-radius: 7px; font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 6px 10px; outline: none; flex: 1; cursor: pointer; background: white; }
 .span-select:focus { border-color: var(--purple); }
-
+ 
 /* ── MODAL ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(2,3,20,0.5); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.18s; backdrop-filter: blur(3px); }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
@@ -200,17 +200,17 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 .modal-subtitle { font-size: 11.5px; color: var(--grey-text); margin-top: 2px; }
 .modal-close { width: 28px; height: 28px; border-radius: 7px; border: none; background: var(--grey-light); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; color: var(--grey-text); }
 .modal-close:hover { background: var(--grey-mid); }
-
+ 
 .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 16px; }
 .type-btn { padding: 8px 10px; border-radius: 9px; border: 2px solid var(--grey-mid); font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.12s; background: white; color: var(--black); }
 .type-btn.sel { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
 .type-btn:hover:not(.sel) { border-color: #bbb; }
-
+ 
 .form-group { margin-bottom: 14px; }
 .form-label { font-size: 11px; font-weight: 700; color: var(--grey-text); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 5px; display: block; }
 .form-input { width: 100%; padding: 9px 12px; border-radius: 8px; border: 1.5px solid var(--grey-mid); font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--black); outline: none; transition: border-color 0.12s; }
 .form-input:focus { border-color: var(--purple); }
-
+ 
 .modal-actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
 .btn-clear  { background: var(--orange-light); color: var(--orange); border: none; flex-shrink: 0; }
 .btn-clear:hover  { background: #fde4d8; }
@@ -218,11 +218,11 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 .btn-save:hover   { background: #5520b8; }
 .btn-invite { background: #4285F4; color: white; flex: 1; justify-content: center; border: none; }
 .btn-invite:hover { background: #3367d6; }
-
+ 
 /* ── TOAST ── */
 .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--charcoal); color: white; padding: 10px 20px; border-radius: 9px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.22s; z-index: 300; pointer-events: none; box-shadow: 0 4px 18px rgba(0,0,0,0.25); }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
+ 
 /* ── PRINT STYLES ── */
 @media print {
   .app-header, .meta-bar, .info-bar, .legend, .week-tabs, .toast, .modal-overlay, .edit-hint, .cal-btn, .no-print { display: none !important; }
@@ -270,10 +270,10 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
   .print-checklist { width: 100%; border-collapse: collapse; margin-top: 8pt; font-size: 7.5pt; page-break-inside: avoid; }
   .print-checklist td { border: 1px solid #ddd; padding: 6pt 8pt; vertical-align: top; }
   @page { size: A4 landscape; margin: 1cm 1.2cm; }
-
+ 
   tr.row-major .td-time-major, tr.row-major .td-cell { border-top: 1px solid #ccc !important; }
 }
-
+ 
 .print-page-header { display: none; }
 /* Screen-side styles for PDF capture (html2canvas doesn't use @media print) */
 .print-page-header-left { display: flex; align-items: center; gap: 12px; }
@@ -290,7 +290,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 </style>
 </head>
 <body>
-
+ 
 <div class="app-header no-print">
   <div class="header-inner">
     <div class="header-brand">
@@ -307,7 +307,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     </div>
   </div>
 </div>
-
+ 
 <div class="meta-bar no-print">
   <div class="meta-inner">
     <span class="meta-label">Employee Details</span>
@@ -329,9 +329,9 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     </div>
   </div>
 </div>
-
+ 
 <div class="main">
-
+ 
   <!-- Shared plan banner -->
   <div id="shared-banner" class="no-print" style="display:none;align-items:center;gap:12px;
     background:#e8f5e9;border:1.5px solid #a5d6a7;border-radius:10px;
@@ -344,7 +344,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     <button onclick="this.parentElement.style.display='none'"
       style="background:none;border:none;font-size:16px;cursor:pointer;color:#2e7d32;padding:0 4px;">✕</button>
   </div>
-
+ 
   <div class="info-bar no-print">
     <div class="info-bar-icon">✏️</div>
     <div class="info-bar-text">
@@ -352,7 +352,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
       Choose a type, name the session, set the duration. Time column shows 30-min markers; you can book in 15-min increments.
     </div>
   </div>
-
+ 
   <div class="legend no-print">
     <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div> Company Onboarding</div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--green-light);border:1px solid #b0d890"></div> Social / Event</div>
@@ -364,12 +364,12 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     <div class="legend-item" style="margin-left:auto;font-size:11px;color:var(--grey-text)">📅 Hover any session to add to Google Calendar</div>
     <div class="legend-item" style="margin-left:auto;font-size:11px;color:var(--grey-text)">💡 Every cell is editable · 30-min markers on left · 15-min booking</div>
   </div>
-
+ 
   <div class="week-tabs no-print">
     <button class="week-tab active" onclick="showWeek(1,this)">Week 1 – Company Onboarding</button>
     <button class="week-tab" onclick="showWeek(2,this)">Week 2 – Team Onboarding ✏️</button>
   </div>
-
+ 
   <div id="week1-block" class="print-week">
     <div class="print-page-header" id="print-header-1">
       <div class="print-page-header-left">
@@ -391,7 +391,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     </div>
     <div class="schedule-wrap"><div class="schedule-scroll"><div id="week1-grid"></div></div></div>
   </div>
-
+ 
   <div id="week2-block" class="print-week" style="display:none">
     <div class="print-page-header" id="print-header-2">
       <div class="print-page-header-left">
@@ -413,9 +413,9 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     </div>
     <div class="schedule-wrap"><div class="schedule-scroll"><div id="week2-grid"></div></div></div>
   </div>
-
+ 
 </div>
-
+ 
 <!-- CALENDAR INVITE MODAL -->
 <div class="modal-overlay" id="cal-modal">
   <div class="modal" style="width:400px">
@@ -426,17 +426,17 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
       </div>
       <button class="modal-close" onclick="closeCalModal()">✕</button>
     </div>
-
+ 
     <div style="background:var(--grey-light);border-radius:10px;padding:12px 14px;margin-bottom:16px;">
       <div style="font-size:12px;font-weight:700;color:var(--grey-text);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">Session</div>
       <div style="font-size:14px;font-weight:700;color:var(--black)" id="cal-modal-title"></div>
       <div style="font-size:12px;color:var(--grey-text);margin-top:3px">🕐 <span id="cal-modal-time"></span> &nbsp;·&nbsp; 👤 <span id="cal-modal-ranby"></span></div>
     </div>
-
+ 
     <div id="cal-no-date-note" style="display:none;background:#FEF0EB;border-radius:8px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:var(--orange);">
       ⚠️ Add a <strong>start date</strong> in the Employee Details bar above to generate date-specific calendar links.
     </div>
-
+ 
     <div style="display:flex;flex-direction:column;gap:10px;">
       <a id="cal-gcal-btn" target="_blank" rel="noopener"
         style="display:flex;align-items:center;justify-content:center;gap:8px;
@@ -449,13 +449,13 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
         Open in Google Calendar
       </a>
     </div>
-
+ 
     <div style="margin-top:14px;font-size:11px;color:var(--grey-text);line-height:1.5;text-align:center;">
       Opens Google Calendar with session details pre-filled.<br>Add attendee emails before sending.
     </div>
   </div>
 </div>
-
+ 
 <!-- EDIT MODAL -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
@@ -502,7 +502,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
     </div>
   </div>
 </div>
-
+ 
 <!-- SHARE MODAL -->
 <div class="modal-overlay" id="share-modal">
   <div class="modal" style="width:480px">
@@ -513,7 +513,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
       </div>
       <button class="modal-close" onclick="closeShareModal()">✕</button>
     </div>
-
+ 
     <div style="background:var(--grey-light);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
       <div style="font-size:10px;font-weight:700;color:var(--grey-text);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Shareable Link</div>
       <div style="display:flex;gap:8px;align-items:center;">
@@ -529,26 +529,26 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
         </button>
       </div>
     </div>
-
+ 
     <div style="background:var(--blue-light);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:#4a50a0;line-height:1.6;">
       <strong style="display:block;margin-bottom:4px;">How it works</strong>
       The entire schedule is encoded in the link — no server, no login needed.<br>
       Your colleague opens the link and sees your plan. They can edit it and share back a new link.
     </div>
-
+ 
     <div style="font-size:11px;color:var(--grey-text);line-height:1.6;">
       ⚠️ The link only works when opened in the same HTML file.<br>
       If you're hosting on GitHub Pages, share the GitHub Pages URL — not a local file path.
     </div>
-
+ 
     <div class="modal-actions" style="margin-top:16px;">
       <button class="btn btn-save" onclick="closeShareModal()" style="justify-content:center;">Done</button>
     </div>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 // Load LZ-string for compression (tiny ~9kb, no dependencies)
 (function(){
@@ -558,7 +558,7 @@ tr.row-major .td-cell { border-top: 1px solid #d4d3de !important; }
 })();
 // ── CONSTANTS ──────────────────────────────────────────────────────────────
 const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
-
+ 
 // 15-min slots from 9:00 to 5:00 = 32 rows
 const TIMES = [
   '9:00','9:15','9:30','9:45',
@@ -571,13 +571,13 @@ const TIMES = [
   '4:00','4:15','4:30','4:45'
 ];
 const NROWS = TIMES.length; // 32
-
+ 
 // Every 4th row is on the hour → show label
 function isMajorRow(r) { return r % 2 === 0; }
-
+ 
 // End time label for a row
 function endTime(r) { return TIMES[r+1] || '5:00'; }
-
+ 
 function durationLabel(rows, startRow) {
   const mins = rows * 15;
   const end  = TIMES[startRow + rows] || '5:00';
@@ -588,7 +588,7 @@ function durationLabel(rows, startRow) {
   else                  timeStr = `${Math.floor(mins/60)} hr ${mins%60} min`;
   return `${timeStr}  (${TIMES[startRow]}–${end})`;
 }
-
+ 
 // ── EMOJIS for Company Onboarding sessions ─────────────────────────────────
 // We store a small map so each pre-filled session has its own emoji.
 // New sessions get a default emoji based on keywords.
@@ -625,7 +625,7 @@ const SESSION_EMOJIS = {
   'check-in':   '✅',
   'end of week':'✅',
 };
-
+ 
 function getSessionEmoji(session, type) {
   if (!session) return '';
   const lower = session.toLowerCase();
@@ -636,7 +636,7 @@ function getSessionEmoji(session, type) {
   const fallback = { company:'🟣', social:'🎉', manager:'📋', lunch:'🍽', team:'👥', selfled:'📖' };
   return fallback[type] || '📌';
 }
-
+ 
 // ── STATE ──────────────────────────────────────────────────────────────────
 // { type, session, ranBy, span }   type:'spanned' for covered rows
 function makeEmpty() {
@@ -653,7 +653,7 @@ function makeEmpty() {
   }
   return d;
 }
-
+ 
 function makeWeek2() {
   const d = makeEmpty(); // already has span-2 empty blocks
   for (let c = 0; c < 5; c++) {
@@ -668,7 +668,7 @@ function makeWeek2() {
   }
   return repairEmpties(d);
 }
-
+ 
 // After placing sessions, repair all remaining rows into clean span-2 empty blocks
 function repairEmpties(d) {
   for (let c = 0; c < 5; c++) {
@@ -712,7 +712,7 @@ function repairEmpties(d) {
   }
   return d;
 }
-
+ 
 function findSpanOwnerStatic(d, spannedRow, col) {
   for (let r = spannedRow - 1; r >= 0; r--) {
     if (d[r][col].type !== 'spanned') {
@@ -722,14 +722,14 @@ function findSpanOwnerStatic(d, spannedRow, col) {
   }
   return -1;
 }
-
+ 
 function makeWeek1() {
   const d = makeEmpty();
   const s = (r,c,type,session,ranBy,span=2) => {
     d[r][c]={type, session:session||'', ranBy:ranBy||'', span};
     for (let i=1;i<span;i++) { if (r+i<NROWS) d[r+i][c]={type:'spanned'}; }
   };
-
+ 
   // ── MONDAY ──
   s(0,0,'selfled','10am Start – no need to be in until 10:00','',4);       // 9:00–10:00
   s(4,0,'company','Welcome! Show desk, get coffee, intro to office & manager','Clarissa Ishak – People & Culture',2); // 10:00–10:30
@@ -737,26 +737,26 @@ function makeWeek1() {
   s(12,0,'social','Team Meet & Team Lunch','',4);                           // 12:00–1:00
   s(24,0,'company','Day One Session: Lawpath Today – Clients, Impact & Direction','Tom Willis – CMO & CO-FOUNDER',4); // 3:00–4:00
   s(30,0,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
-
+ 
   // ── TUESDAY ──
   s(0,1,'company','Day Two Session: How We Work and Grow at Lawpath','Carli Shields – People & Culture Manager',4); // 9:00–10:00
   s(4,1,'company','Day Two Session: Who\'s who in the Zoo!','Clarissa Ishak – People & Culture Advisor',4); // 10:00–11:00
   s(12,1,'lunch','Lunch','',4);                                             // 12:00–1:00
   s(20,1,'company','Company Onboarding: Product at Lawpath – Live Demo & Walkthrough','Sarah Wu – Product Lead',4); // 2:00–3:00
   s(30,1,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
-
+ 
   // ── WEDNESDAY ──
   s(4,2,'company','Company Onboarding: Customer Support at Lawpath','Lauren Johnston – Customer Support Manager',2);  // 10:00–10:30
   s(6,2,'company','Company Onboarding: Marketing at Lawpath','Camilla Perez – Senior Marketing Manager',2);           // 10:30–11:00
   s(12,2,'lunch','Lunch','',4);                                             // 12:00–1:00
   s(30,2,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
-
+ 
   // ── THURSDAY ──
   s(4,3,'company','Company Onboarding: Sales at Lawpath','Steve Hoyle – Sales Director',2);          // 10:00–10:30
   s(8,3,'company','Company Onboarding: Tax & Advisory at Lawpath','Tim Quinn – Head of Tax',2);      // 11:00–11:30
   s(12,3,'lunch','Lunch','',4);                                             // 12:00–1:00
   s(30,3,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
-
+ 
   // ── FRIDAY ──
   s(0,4,'social','All Hands','',2);                                         // 9:00–9:30
   s(6,4,'company','Company Onboarding: Digital Transformation at Lawpath','Samuel Setoh – Digital Transformation Manager',2); // 10:30–11:00
@@ -765,33 +765,33 @@ function makeWeek1() {
   s(20,4,'company','Company Onboarding: People & Culture at Lawpath','Natasha Hannah – Chief of Staff',2); // 2:00–2:30
   s(28,4,'company','P&C End of Week 1 Check In','Clarissa Ishak – People & Culture Advisor',2);      // 4:00–4:30
   s(30,4,'manager','Manager End of Day Check In','',2);                     // 4:30–5:00
-
+ 
   return repairEmpties(d);
 }
-
+ 
 let scheduleData = { 1: makeWeek1(), 2: makeWeek2() };
 let editingCell  = null;
 let selectedType = 'company';
-
+ 
 // ── RENDER ─────────────────────────────────────────────────────────────────
 function renderGrid(week) {
   const container = document.getElementById(`week${week}-grid`);
   const data = scheduleData[week];
-
+ 
   let html = `<table class="sched-table">`;
   html += `<colgroup><col style="width:64px">${DAYS.map(()=>'<col>').join('')}</colgroup>`;
   html += `<tr><th class="th-time">Time</th>${DAYS.map(d=>`<th class="th-day">${d}</th>`).join('')}</tr>`;
-
+ 
   for (let r=0; r<NROWS; r++) {
     const major = isMajorRow(r);
     html += `<tr${major ? ' class="row-major"' : ''}>`;
-
+ 
     if (major) {
       html += `<td class="td-time-major">${TIMES[r]}</td>`;
     } else {
       html += `<td class="td-time-minor"></td>`;
     }
-
+ 
     for (let c=0; c<5; c++) {
       const cell = data[r][c];
       if (cell.type === 'spanned') continue;
@@ -799,103 +799,103 @@ function renderGrid(week) {
     }
     html += '</tr>';
   }
-
+ 
   html += '</table>';
   container.innerHTML = html;
 }
-
+ 
 function buildCell(cell, week, r, c) {
   const span = cell.span || 1;
   const rs = span > 1 ? ` rowspan="${span}"` : '';
-
+ 
   const typeClass = {
     company:'c-company', social:'c-social', manager:'c-manager',
     lunch:'c-lunch', selfled:'c-selfled', team:'c-team',
     empty:'c-empty', editable:'c-empty'
   }[cell.type] || 'c-empty';
-
+ 
   const onclick = `onclick="openModal(${week},${r},${c})"`;
-
+ 
   let inner = buildCellInner(cell);
   inner += `<div class="edit-hint">Edit ✎</div>`;
-
+ 
   // Calendar invite button for all filled sessions
   const noCalTypes = new Set(['empty', 'editable', 'spanned']);
   if (!noCalTypes.has(cell.type) && cell.session) {
     inner += `<button class="cal-btn" onclick="openCalInvite(event,${week},${r},${c})">📅 Invite</button>`;
   }
-
+ 
   // Wrap content in absolute container so it never pushes row height
   return `<td class="td-cell ${typeClass}"${rs} ${onclick}>${inner}</td>`;
 }
-
+ 
 function buildCellInner(cell) {
   const type = cell.type;
   const session = cell.session || '';
   const ranBy   = cell.ranBy   || '';
-
+ 
   // Empty / editable / selfled with no content — all show same placeholder
   if ((type==='empty'||type==='editable'||type==='selfled') && !session) {
     return `<div class="cell-ph">+ Add session…</div>`;
   }
-
+ 
   // Company Onboarding — badge + emoji + text
   if (type==='company') {
     const emoji = getSessionEmoji(session, type);
     return `<span class="cell-badge badge-company">Onboarding</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Social
   if (type==='social') {
     const emoji = getSessionEmoji(session, type);
     return `<span class="cell-badge badge-social">Social</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Manager
   if (type==='manager') {
     const emoji = getSessionEmoji(session, type);
     return `<span class="cell-badge badge-manager">Manager</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session||'Manager End of Day Check In')}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Lunch
   if (type==='lunch') {
     const emoji = getSessionEmoji(session, type);
     return `<span class="cell-badge badge-lunch">Break</span><div class="cell-text">${emoji ? emoji+' ' : ''}${esc(session||'Lunch')}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Team session
   if (type==='team') {
     return `<span class="cell-badge badge-team">Team</span><div class="cell-text">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Self led with custom name
   if (type==='selfled') {
     return `<div class="cell-text" style="color:#666;font-weight:500">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
   }
-
+ 
   // Fallback for any other type with content
   return `<div class="cell-text">${esc(session)}</div>${ranBy?`<div class="cell-ranby">${esc(ranBy)}</div>`:''}`;
 }
-
+ 
 function esc(s) {
   if (!s) return '';
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
+ 
 // ── MODAL ──────────────────────────────────────────────────────────────────
 function openModal(week, row, col) {
   editingCell = {week, row, col};
   const cell = scheduleData[week][row][col];
-
+ 
   document.getElementById('modal-title').textContent = DAYS[col];
   document.getElementById('modal-subtitle').textContent = `${TIMES[row]} · Week ${week}`;
-
+ 
   // Session name — clear default selfled/manager/lunch placeholders
   const defaultNames = ['Manager End of Day Check In','Lunch'];
   const showName = !defaultNames.includes(cell.session);
   document.getElementById('sessionName').value = showName ? (cell.session||'') : '';
   document.getElementById('ranByName').value = cell.ranBy || '';
-
+ 
   // Build START TIME dropdown — all rows in this column that aren't spanned by another cell
   const startSel = document.getElementById('startSelect');
   startSel.innerHTML = '';
@@ -914,23 +914,23 @@ function openModal(week, row, col) {
     if (r === row) opt.selected = true;
     startSel.appendChild(opt);
   }
-
+ 
   // Rebuild duration when start changes
   startSel.onchange = () => rebuildDurationSelect(week, parseInt(startSel.value), col, 1);
-
+ 
   // Build DURATION dropdown
   rebuildDurationSelect(week, row, col, cell.span||1);
-
+ 
   // Current type
   const t = (cell.type==='editable'||cell.type==='empty') ? 'company' : cell.type;
   selectedType = t;
   updateTypeButtons();
   updateFieldVis();
-
+ 
   document.getElementById('modal').classList.add('open');
   setTimeout(()=>document.getElementById('sessionName').focus(), 180);
 }
-
+ 
 function findSpanOwner(data, spannedRow, col) {
   // Walk up to find the cell that owns this spanned row
   for (let r = spannedRow - 1; r >= 0; r--) {
@@ -943,20 +943,20 @@ function findSpanOwner(data, spannedRow, col) {
   }
   return -1;
 }
-
+ 
 function rebuildDurationSelect(week, startRow, col, currentSpan) {
   const select = document.getElementById('spanSelect');
   select.innerHTML = '';
-
+ 
   // Always offer 30-min increments up to 4 hours (half day), regardless of what's in the grid.
   // Saving will handle clearing any cells that get overwritten.
   const STEP    = 2;  // 2 rows = 30 min
   const MAX_ROWS = 16; // 16 rows = 4 hours
-
+ 
   // Cap at rows remaining in the day from this start
   const rowsLeft = NROWS - startRow;
   const maxSpan  = Math.min(MAX_ROWS, rowsLeft % STEP === 0 ? rowsLeft : rowsLeft - (rowsLeft % STEP));
-
+ 
   for (let sp = STEP; sp <= maxSpan; sp += STEP) {
     const opt = document.createElement('option');
     opt.value = sp;
@@ -964,19 +964,19 @@ function rebuildDurationSelect(week, startRow, col, currentSpan) {
     if (sp === currentSpan || (currentSpan < STEP && sp === STEP)) opt.selected = true;
     select.appendChild(opt);
   }
-
+ 
   // Fallback — if nothing selected, pick first
   if (select.selectedIndex === -1 && select.options.length > 0) {
     select.options[0].selected = true;
   }
 }
-
+ 
 function calcMaxSpan(week, row, col, currentSpan) {
   const data = scheduleData[week];
   // origRow is the cell being edited (from editingCell)
   const origRow = editingCell ? editingCell.row : row;
   const origSpan = editingCell ? (data[origRow]?.[col]?.span || 1) : currentSpan;
-
+ 
   let max = 1;
   for (let r = row + 1; r < NROWS; r++) {
     const c = data[r][col];
@@ -989,29 +989,29 @@ function calcMaxSpan(week, row, col, currentSpan) {
   }
   return Math.min(max, NROWS - row);
 }
-
+ 
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   editingCell = null;
 }
-
+ 
 function selectType(btn) {
   selectedType = btn.dataset.type;
   updateTypeButtons();
   updateFieldVis();
   document.getElementById('sessionName').focus();
 }
-
+ 
 function updateTypeButtons() {
   document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('sel', b.dataset.type===selectedType));
 }
-
+ 
 function updateFieldVis() {
   const f = document.getElementById('session-fields');
   const hide = selectedType === 'empty';
   f.style.opacity = hide ? '0.3' : '1';
   f.style.pointerEvents = hide ? 'none' : '';
-
+ 
   const namePH = {
     company: 'e.g. Welcome to Lawpath! History & Vision',
     social:  'e.g. Team Lunch / All Hands',
@@ -1022,12 +1022,12 @@ function updateFieldVis() {
   };
   document.getElementById('sessionName').placeholder = namePH[selectedType] || 'Session name';
   document.getElementById('ranByName').placeholder = selectedType==='selfled' ? 'e.g. Self Led (optional)' : 'e.g. Sarah Wu – Product Manager';
-
+ 
   // Show "Save & Invite" for all session types except Clear
   const inviteBtn = document.getElementById('save-invite-btn');
   inviteBtn.style.display = selectedType === 'empty' ? 'none' : 'inline-flex';
 }
-
+ 
 function saveCell() {
   if (!editingCell) return;
   const {week, col} = editingCell;
@@ -1038,7 +1038,7 @@ function saveCell() {
   const newSpan  = parseInt(document.getElementById('spanSelect').value) || 2;
   const newRow   = parseInt(document.getElementById('startSelect').value);
   const oldSpan  = data[origRow][col].span || 2;
-
+ 
   // Helper: restore a range of rows back to uniform span-2 empty blocks
   function restoreEmpty(startR, count) {
     for (let i = 0; i < count; i++) {
@@ -1055,10 +1055,10 @@ function saveCell() {
       if (hasNext) data[r+1][col] = {type:'spanned'};
     }
   }
-
+ 
   // 1. Clear old position
   restoreEmpty(origRow, oldSpan);
-
+ 
   // 2. Clear cells the new span will overwrite (walk row by row, handle spanned owners)
   let r = newRow;
   while (r < newRow + newSpan && r < NROWS) {
@@ -1076,12 +1076,12 @@ function saveCell() {
       r += span;
     }
   }
-
+ 
   // 3. Write the new cell
   const sessionName = selectedType === 'manager' ? (session || 'Manager End of Day Check In')
                     : selectedType === 'lunch'   ? (session || 'Lunch')
                     : session;
-
+ 
   if (selectedType === 'empty') {
     restoreEmpty(newRow, newSpan);
   } else {
@@ -1090,31 +1090,31 @@ function saveCell() {
       if (newRow + i < NROWS) data[newRow + i][col] = {type:'spanned'};
     }
   }
-
+ 
   editingCell.row = newRow;
   closeModal();
   renderGrid(week);
   showToast('Session saved ✓');
 }
-
+ 
 function saveCellAndInvite() {
   if (!editingCell) return;
   const {week, row, col} = editingCell;
-
+ 
   // Save first
   saveCell(); // closes modal, re-renders grid
-
+ 
   // Then open Google Calendar with the now-saved cell data
   const cell = scheduleData[week][row][col];
   const startDateRaw = document.getElementById('startDate').value;
-
+ 
   let sessionDate = null;
   if (startDateRaw) {
     const base = new Date(startDateRaw);
     sessionDate = new Date(base);
     sessionDate.setDate(base.getDate() + (week - 1) * 7 + col);
   }
-
+ 
   function localParseHHMM(t) {
     const p = t.split(':');
     let h = parseInt(p[0]);
@@ -1125,7 +1125,7 @@ function saveCellAndInvite() {
   const startT = localParseHHMM(TIMES[row]);
   const endRow = row + (cell.span || 1);
   const endT   = localParseHHMM(endRow < TIMES.length ? TIMES[endRow] : '17:00');
-
+ 
   function localToGCalDT(date, hh, mm) {
     if (!date) return '';
     const y = date.getFullYear();
@@ -1133,9 +1133,9 @@ function saveCellAndInvite() {
     const d  = String(date.getDate()).padStart(2,'0');
     return `${y}${mo}${d}T${String(hh).padStart(2,'0')}${String(mm).padStart(2,'0')}00`;
   }
-
+ 
   const details = cell.ranBy ? `Hosted by: ${cell.ranBy}` : '';
-
+ 
   if (sessionDate) {
     const params = new URLSearchParams({
       action: 'TEMPLATE',
@@ -1148,7 +1148,7 @@ function saveCellAndInvite() {
     showToast('Session saved — add a start date to generate calendar link');
   }
 }
-
+ 
 function clearCell() {
   if (!editingCell) return;
   const {week, row, col} = editingCell;
@@ -1169,43 +1169,43 @@ function clearCell() {
   renderGrid(week);
   showToast('Slot cleared');
 }
-
+ 
 // ── WEEK TOGGLE ────────────────────────────────────────────────────────────
 function showWeek(week, btn) {
   document.getElementById('week1-block').style.display = week===1 ? 'block' : 'none';
   document.getElementById('week2-block').style.display = week===2 ? 'block' : 'none';
   document.querySelectorAll('.week-tab').forEach((t,i) => t.classList.toggle('active', i===week-1));
 }
-
+ 
 function resetWeek2() {
   if (!confirm('Reset Week 2 to blank template? This will clear all your changes.')) return;
   scheduleData[2] = makeWeek2();
   renderGrid(2);
   showToast('Week 2 reset to blank template');
 }
-
+ 
 // ── PRINT HEADERS ──────────────────────────────────────────────────────────
 function updatePrintHeaders() {
   const name    = document.getElementById('empName').value    || '';
   const dateRaw = document.getElementById('startDate').value;
   const role    = document.getElementById('empRole').value    || '';
   const mgr     = document.getElementById('managerName').value || '';
-
+ 
   const dateStr = dateRaw
     ? new Date(dateRaw).toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})
     : '';
-
+ 
   const pills = [
     name    ? `<span class="print-pill">👤 ${name}</span>` : '',
     role    ? `<span class="print-pill">💼 ${role}</span>` : '',
     mgr     ? `<span class="print-pill">🧑‍💼 Manager: ${mgr}</span>` : '',
     dateStr ? `<span class="print-pill">📅 Starts ${dateStr}</span>` : '',
   ].filter(Boolean).join('');
-
+ 
   document.getElementById('ph1-right').innerHTML = pills;
   document.getElementById('ph2-right').innerHTML = pills;
 }
-
+ 
 // ── CALENDAR HELPERS ───────────────────────────────────────────────────────
 // TIMES uses 12-hr style (1:00 = 1pm). Convert to 24-hr for calendar URLs.
 function parseHHMM(t) {
@@ -1229,14 +1229,14 @@ function calDates(row, span) {
   const endT   = parseHHMM(endRow < TIMES.length ? TIMES[endRow] : '17:00');
   return { startT, endT };
 }
-
+ 
 // ── CALENDAR INVITE ────────────────────────────────────────────────────────
 function openCalInvite(evt, week, row, col) {
   evt.stopPropagation();
-
+ 
   const cell = scheduleData[week][row][col];
   const startDateRaw = document.getElementById('startDate').value;
-
+ 
   // Work out the actual calendar date
   let sessionDate = null;
   if (startDateRaw) {
@@ -1244,17 +1244,17 @@ function openCalInvite(evt, week, row, col) {
     sessionDate = new Date(base);
     sessionDate.setDate(base.getDate() + (week - 1) * 7 + col);
   }
-
+ 
   const { startT, endT } = calDates(row, cell.span);
   const endRow = row + (cell.span || 1);
-
+ 
   const title   = cell.session;
   const details = cell.ranBy ? `Hosted by: ${cell.ranBy}` : '';
   const dayLabel = sessionDate
     ? sessionDate.toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'})
     : `${DAYS[col]}, Week ${week}`;
   const timeLabel = `${TIMES[row]}–${endRow < TIMES.length ? TIMES[endRow] : '5:00'}`;
-
+ 
   // Build Google Calendar URL
   let gcalUrl = '';
   if (sessionDate) {
@@ -1266,12 +1266,12 @@ function openCalInvite(evt, week, row, col) {
     });
     gcalUrl = `https://calendar.google.com/calendar/render?${params.toString()}`;
   }
-
+ 
   document.getElementById('cal-modal-day').textContent   = dayLabel;
   document.getElementById('cal-modal-time').textContent  = timeLabel;
   document.getElementById('cal-modal-title').textContent = cell.session;
   document.getElementById('cal-modal-ranby').textContent = cell.ranBy || '—';
-
+ 
   const gcalBtn = document.getElementById('cal-gcal-btn');
   if (gcalUrl) {
     gcalBtn.href = gcalUrl;
@@ -1284,119 +1284,138 @@ function openCalInvite(evt, week, row, col) {
     gcalBtn.style.pointerEvents = 'none';
     gcalBtn.title = 'Enter a start date in Employee Details to generate a date-specific link';
   }
-
+ 
   document.getElementById('cal-no-date-note').style.display = startDateRaw ? 'none' : 'block';
   document.getElementById('cal-modal').classList.add('open');
 }
-
+ 
 function closeCalModal() {
   document.getElementById('cal-modal').classList.remove('open');
 }
-
+ 
 // ── PDF EXPORT ─────────────────────────────────────────────────────────────
 function exportToPDF() {
   updatePrintHeaders();
-
+ 
   const empName = document.getElementById('empName').value || 'Onboarding_Schedule';
-
+ 
+  // A4 landscape dimensions in mm and target pixel width for capture
+  const { jsPDF } = window.jspdf;
+  const pageW = 297;
+  const pageH = 210;
+  const margin = 6;
+  const availW = pageW - margin * 2;
+  const availH = pageH - margin * 2;
+ 
+  // Target capture width in px — we render the table at exactly this width
+  // then html2canvas screenshots it. The height will follow naturally.
+  const TARGET_PX_W = 1800;
+ 
   // Show print-only elements
   document.querySelectorAll('.print-page-header').forEach(el => {
     el.style.display = 'flex';
     el.style.background = '#1E1E2E';
     el.style.color = 'white';
-    el.style.padding = '12px 16px';
-    el.style.marginBottom = '8px';
+    el.style.padding = '10px 14px';
+    el.style.marginBottom = '6px';
     el.style.borderRadius = '8px';
     el.style.alignItems = 'center';
     el.style.justifyContent = 'space-between';
   });
   document.querySelectorAll('.print-legend').forEach(el => {
     el.style.display = 'flex';
-    el.style.gap = '16px';
+    el.style.gap = '14px';
     el.style.flexWrap = 'wrap';
-    el.style.marginBottom = '8px';
-    el.style.padding = '4px 0';
+    el.style.marginBottom = '6px';
+    el.style.padding = '3px 0';
   });
   document.getElementById('week1-block').style.display = 'block';
   document.getElementById('week2-block').style.display = 'block';
-
+ 
   showToast('Generating PDF…');
-
-  const { jsPDF } = window.jspdf;
+ 
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
-  const pageW = 297;
-  const pageH = 210;
-  const margin = 8;
-
+ 
   const weeks = [
     document.getElementById('week1-block'),
     document.getElementById('week2-block')
   ];
-
+ 
+  function restoreUI() {
+    document.querySelectorAll('.print-page-header').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.print-legend').forEach(el => el.style.display = 'none');
+    const compactStyle = document.getElementById('pdf-compact-style');
+    if (compactStyle) compactStyle.remove();
+    const w = document.querySelector('.week-tab.active')?.textContent.includes('2') ? 2 : 1;
+    document.getElementById('week1-block').style.display = w === 1 ? 'block' : 'none';
+    document.getElementById('week2-block').style.display = w === 2 ? 'block' : 'none';
+  }
+ 
   function captureWeek(idx) {
     if (idx >= weeks.length) {
       pdf.save(`Lawpath_Onboarding_${empName.replace(/\s+/g,'_')}.pdf`);
-      // Restore
-      document.querySelectorAll('.print-page-header').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.print-legend').forEach(el => el.style.display = 'none');
-      const compactStyle = document.getElementById('pdf-compact-style');
-      if (compactStyle) compactStyle.remove();
-      const w = document.querySelector('.week-tab.active')?.textContent.includes('2') ? 2 : 1;
-      document.getElementById('week1-block').style.display = w === 1 ? 'block' : 'none';
-      document.getElementById('week2-block').style.display = w === 2 ? 'block' : 'none';
+      restoreUI();
       showToast('PDF downloaded ✓');
       return;
     }
-
+ 
     const el = weeks[idx];
+    const naturalW = el.scrollWidth;
+ 
     html2canvas(el, {
-      scale: 2,
+      scale: TARGET_PX_W / naturalW,   // scale so captured width = TARGET_PX_W
       useCORS: true,
       backgroundColor: '#ffffff',
       logging: false,
-      width: el.scrollWidth,
-      windowWidth: el.scrollWidth,
+      width: naturalW,
+      windowWidth: naturalW,
       x: 0,
       y: 0,
       scrollX: 0,
       scrollY: 0,
     }).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
-      const availW = pageW - margin * 2;
-      const availH = pageH - margin * 2;
-      // Always scale to fit the available area — whichever dimension is the constraint
-      const scaleByW = availW / (canvas.width / 2);
-      const scaleByH = availH / (canvas.height / 2);
-      const scale = Math.min(scaleByW, scaleByH);
-      const finalW = (canvas.width / 2) * scale;
-      const finalH = (canvas.height / 2) * scale;
-      const xOff = margin + (availW - finalW) / 2;
-      const yOff = margin + (availH - finalH) / 2;
-
+ 
+      // canvas.width ≈ TARGET_PX_W, canvas.height is whatever the content is
+      // Scale the image to fill the available page area (always fit to page)
+      const scaleByW = availW / canvas.width;
+      const scaleByH = availH / canvas.height;
+      const scale    = Math.min(scaleByW, scaleByH);   // fit, never overflow
+      const finalW   = canvas.width  * scale;
+      const finalH   = canvas.height * scale;
+      const xOff     = margin + (availW - finalW) / 2;
+      const yOff     = margin + (availH - finalH) / 2;
+ 
       if (idx > 0) pdf.addPage('a4', 'landscape');
       pdf.addImage(imgData, 'PNG', xOff, yOff, finalW, finalH);
       captureWeek(idx + 1);
     });
   }
-
-  // Temporarily compact row heights for PDF capture
+ 
+  // Compact styles tuned so the full schedule fits on one A4 page
   const styleEl = document.createElement('style');
   styleEl.id = 'pdf-compact-style';
   styleEl.textContent = `
-    .sched-table tr { line-height: 1 !important; }
-    .td-time-major, .td-time-minor { height: 18px !important; font-size: 8px !important; }
-    .td-cell { padding: 2px 4px !important; }
-    .cell-badge { font-size: 7px !important; padding: 1px 3px !important; margin-bottom: 1px !important; }
-    .cell-text { font-size: 9px !important; line-height: 1.2 !important; }
-    .cell-ranby { font-size: 8px !important; }
-    .cell-ph, .cell-ph-grey { font-size: 8px !important; }
-    .th-day, .th-time { padding: 6px 4px !important; font-size: 11px !important; }
+    .schedule-wrap { box-shadow: none !important; border-radius: 0 !important; }
+    .schedule-scroll { overflow: visible !important; }
+    .sched-table { table-layout: fixed !important; width: 100% !important; }
+    .sched-table tr { height: auto !important; line-height: 1.1 !important; }
+    .td-time-major { font-size: 7.5px !important; padding: 2px 4px 0 0 !important; height: auto !important; }
+    .td-time-minor { height: auto !important; }
+    .td-cell { padding: 2px 3px !important; overflow: hidden !important; }
+    .cell-badge { font-size: 6.5px !important; padding: 1px 3px !important; margin-bottom: 1px !important; display: inline-block !important; }
+    .cell-text { font-size: 8px !important; line-height: 1.2 !important; -webkit-line-clamp: 3 !important; }
+    .cell-ranby { font-size: 7px !important; margin-top: 0 !important; }
+    .cell-ph, .cell-ph-grey { display: none !important; }
+    .edit-hint, .cal-btn { display: none !important; }
+    .th-day { font-size: 10px !important; padding: 5px 4px !important; }
+    .th-time { font-size: 8px !important; padding: 5px 4px !important; }
   `;
   document.head.appendChild(styleEl);
-
-  setTimeout(() => captureWeek(0), 200);
+ 
+  setTimeout(() => captureWeek(0), 300);
 }
-
+ 
 // ── TOAST ──────────────────────────────────────────────────────────────────
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -1404,7 +1423,7 @@ function showToast(msg) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
-
+ 
 // ── KEYBOARD ───────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.key==='Escape') { closeModal(); closeCalModal(); }
@@ -1416,7 +1435,7 @@ document.getElementById('modal').addEventListener('click', function(e) {
 document.getElementById('cal-modal').addEventListener('click', function(e) {
   if (e.target===this) closeCalModal();
 });
-
+ 
 // ── SHARE / URL STATE ──────────────────────────────────────────────────────
 function sharePlan() {
   const state = {
@@ -1429,15 +1448,15 @@ function sharePlan() {
     },
     data: scheduleData
   };
-
+ 
   const json       = JSON.stringify(state);
   const compressed = LZString.compressToEncodedURIComponent(json);
   const url        = `${location.origin}${location.pathname}#plan=${compressed}`;
-
+ 
   document.getElementById('share-url-input').value = url;
   document.getElementById('share-modal').classList.add('open');
 }
-
+ 
 function copyShareLink() {
   const input = document.getElementById('share-url-input');
   input.select();
@@ -1456,15 +1475,15 @@ function copyShareLink() {
     showToast('Link copied ✓');
   });
 }
-
+ 
 function closeShareModal() {
   document.getElementById('share-modal').classList.remove('open');
 }
-
+ 
 function restoreFromURL() {
   const hash = location.hash;
   if (!hash.startsWith('#plan=')) return false;
-
+ 
   // Wait for LZString to load if needed
   function tryRestore(attempt) {
     if (typeof LZString === 'undefined') {
@@ -1476,7 +1495,7 @@ function restoreFromURL() {
       const compressed = hash.slice(6); // strip '#plan='
       const json       = LZString.decompressFromEncodedURIComponent(compressed);
       const state      = JSON.parse(json);
-
+ 
       if (state.emp) {
         document.getElementById('empName').value    = state.emp.name    || '';
         document.getElementById('startDate').value  = state.emp.date    || '';
@@ -1486,15 +1505,15 @@ function restoreFromURL() {
       if (state.data) {
         scheduleData = state.data;
       }
-
+ 
       renderGrid(1);
       renderGrid(2);
       updatePrintHeaders();
-
+ 
       // Show a banner that this is a shared plan
       const banner = document.getElementById('shared-banner');
       if (banner) banner.style.display = 'flex';
-
+ 
       showToast('✓ Shared plan loaded!');
       return true;
     } catch(e) {
@@ -1505,12 +1524,12 @@ function restoreFromURL() {
   tryRestore(0);
   return true;
 }
-
+ 
 document.getElementById('share-modal').addEventListener('click', function(e) {
   if (e.target === this) closeShareModal();
 });
-
-
+ 
+ 
 renderGrid(1);
 renderGrid(2);
 updatePrintHeaders();
@@ -1519,3 +1538,4 @@ restoreFromURL();
 </script>
 </body>
 </html>
+ 
