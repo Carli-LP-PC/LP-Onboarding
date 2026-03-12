@@ -1299,17 +1299,10 @@ function exportToPDF() {
  
   const empName = document.getElementById('empName').value || 'Onboarding_Schedule';
  
-  // A4 landscape dimensions in mm and target pixel width for capture
   const { jsPDF } = window.jspdf;
   const pageW = 297;
   const pageH = 210;
-  const margin = 6;
-  const availW = pageW - margin * 2;
-  const availH = pageH - margin * 2;
- 
-  // Target capture width in px — we render the table at exactly this width
-  // then html2canvas screenshots it. The height will follow naturally.
-  const TARGET_PX_W = 1800;
+  const margin = 5;
  
   // Show print-only elements
   document.querySelectorAll('.print-page-header').forEach(el => {
@@ -1360,51 +1353,42 @@ function exportToPDF() {
     }
  
     const el = weeks[idx];
-    const naturalW = el.scrollWidth;
  
     html2canvas(el, {
-      scale: TARGET_PX_W / naturalW,   // scale so captured width = TARGET_PX_W
+      scale: 2,
       useCORS: true,
       backgroundColor: '#ffffff',
       logging: false,
-      width: naturalW,
-      windowWidth: naturalW,
+      width: el.scrollWidth,
+      windowWidth: el.scrollWidth,
       x: 0,
       y: 0,
       scrollX: 0,
       scrollY: 0,
     }).then(canvas => {
       const imgData = canvas.toDataURL('image/png');
- 
-      // canvas.width ≈ TARGET_PX_W, canvas.height is whatever the content is
-      // Scale the image to fill the available page area (always fit to page)
-      const scaleByW = availW / canvas.width;
-      const scaleByH = availH / canvas.height;
-      const scale    = Math.min(scaleByW, scaleByH);   // fit, never overflow
-      const finalW   = canvas.width  * scale;
-      const finalH   = canvas.height * scale;
-      const xOff     = margin + (availW - finalW) / 2;
-      const yOff     = margin + (availH - finalH) / 2;
+      // Always stretch to fill the full A4 page — no gaps, no centering
+      const finalW = pageW - margin * 2;
+      const finalH = pageH - margin * 2;
  
       if (idx > 0) pdf.addPage('a4', 'landscape');
-      pdf.addImage(imgData, 'PNG', xOff, yOff, finalW, finalH);
+      pdf.addImage(imgData, 'PNG', margin, margin, finalW, finalH);
       captureWeek(idx + 1);
     });
   }
  
-  // Compact styles tuned so the full schedule fits on one A4 page
+  // Compact styles for PDF capture
   const styleEl = document.createElement('style');
   styleEl.id = 'pdf-compact-style';
   styleEl.textContent = `
     .schedule-wrap { box-shadow: none !important; border-radius: 0 !important; }
     .schedule-scroll { overflow: visible !important; }
     .sched-table { table-layout: fixed !important; width: 100% !important; }
-    .sched-table tr { height: auto !important; line-height: 1.1 !important; }
-    .td-time-major { font-size: 7.5px !important; padding: 2px 4px 0 0 !important; height: auto !important; }
-    .td-time-minor { height: auto !important; }
+    .sched-table tr { line-height: 1.1 !important; }
+    .td-time-major { font-size: 7.5px !important; padding: 2px 4px 0 0 !important; }
     .td-cell { padding: 2px 3px !important; overflow: hidden !important; }
-    .cell-badge { font-size: 6.5px !important; padding: 1px 3px !important; margin-bottom: 1px !important; display: inline-block !important; }
-    .cell-text { font-size: 8px !important; line-height: 1.2 !important; -webkit-line-clamp: 3 !important; }
+    .cell-badge { font-size: 6.5px !important; padding: 1px 3px !important; margin-bottom: 1px !important; }
+    .cell-text { font-size: 8px !important; line-height: 1.2 !important; }
     .cell-ranby { font-size: 7px !important; margin-top: 0 !important; }
     .cell-ph, .cell-ph-grey { display: none !important; }
     .edit-hint, .cal-btn { display: none !important; }
