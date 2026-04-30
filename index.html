@@ -106,12 +106,13 @@ body { font-family: 'DM Sans', sans-serif; background: #EEEAF6; overflow: hidden
 .sg.on { display: block; }
 
 .ov { position: fixed; inset: 0; background: rgba(8,4,20,.52); z-index: 500; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-.mb { background: #fff; border-radius: 18px; padding: 28px; width: 460px; max-width: 96vw; box-shadow: 0 32px 80px rgba(106,45,208,.22); }
+.mb { background: #fff; border-radius: 18px; width: 520px; max-width: 96vw; box-shadow: 0 32px 80px rgba(106,45,208,.22); overflow:hidden; padding:0; }
 .mt { font-size: 18px; font-weight: 800; color: var(--dark); margin-bottom: 22px; }
 .fl { font-size: 9.5px; font-weight: 800; color: #bbb; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
 .fg { margin-bottom: 15px; }
-.mb input { width: 100%; border: 1.5px solid #e4e2f0; border-radius: 8px; padding: 9px 12px; font-family: inherit; font-size: 13px; outline: none; color: var(--dark); }
-.mb input:focus { border-color: var(--purple); }
+.mb input, .mb textarea { width: 100%; border: 1.5px solid #e4e2f0; border-radius: 8px; padding: 9px 12px; font-family: inherit; font-size: 13px; outline: none; color: var(--dark); }
+.mb input:focus, .mb textarea:focus { border-color: var(--purple); }
+.mb select { width: 100%; border: 1.5px solid #e4e2f0; border-radius: 8px; padding: 9px 12px; font-family: inherit; font-size: 13px; outline: none; color: var(--dark); background: white; }
 .tg { display: flex; flex-wrap: wrap; gap: 6px; }
 .tb { padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; border: 1.5px solid; font-family: inherit; }
 .tr { display: flex; gap: 12px; }
@@ -181,35 +182,63 @@ body { font-family: 'DM Sans', sans-serif; background: #EEEAF6; overflow: hidden
 <div class="tip" id="tip"></div>
 <div class="toast" id="toast"></div>
 
-<!-- PDF-only header — hidden on screen, shown during capture -->
-<div id="pdf-hdr" style="display:none; background:#1E1E2E; color:white; padding:14px 20px; align-items:center; justify-content:space-between; border-radius:8px; margin-bottom:6px; font-family:'DM Sans',sans-serif;">
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div style="width:32px;height:32px;background:#6A2DD0;border-radius:8px;display:grid;place-items:center;font-weight:800;font-size:16px;color:#fff;flex-shrink:0;">L</div>
+<!-- SIDE EDIT PANEL -->
+<div id="side-panel" style="position:fixed;top:0;right:-360px;width:340px;height:100vh;background:white;box-shadow:-4px 0 40px rgba(0,0,0,0.18);z-index:800;transition:right 0.25s ease;display:flex;flex-direction:column;font-family:'DM Sans',sans-serif;">
+  <!-- Panel header -->
+  <div id="sp-header" style="padding:18px 20px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
     <div>
-      <div style="font-size:16px;font-weight:800;color:#fff;" id="pdf-hdr-title">Lawpath Onboarding</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.45);" id="pdf-hdr-sub">Week 1 – Company Onboarding</div>
+      <div id="sp-em" style="font-size:20px;display:inline;margin-right:8px;"></div>
+      <span id="sp-type" style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:white;"></span>
     </div>
+    <button onclick="closePanel()" style="background:rgba(255,255,255,.2);border:none;color:white;width:26px;height:26px;border-radius:50%;font-size:14px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;">✕</button>
   </div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;" id="pdf-pills"></div>
-</div>
 
-<div class="ov" id="modal" style="display:none" onclick="closeM()">
-  <div class="mb" onclick="event.stopPropagation()">
-    <div class="mt" id="mtit">Add Session</div>
-    <div class="fg"><div class="fl">Session Type</div><div class="tg" id="tg"></div></div>
-    <div class="fg"><div class="fl">Session Name</div><input id="ft" placeholder="e.g. Product Walkthrough"></div>
-    <div class="fg"><div class="fl">Run By (optional)</div><input id="fr" placeholder="e.g. Sarah Wu – Product Lead"></div>
-    <div class="tr">
-      <div class="fg"><div class="fl">Start</div><input type="time" id="fs" step="300"></div>
-      <div class="fg"><div class="fl">End</div><input type="time" id="fe" step="300"></div>
+  <!-- Panel body -->
+  <div style="flex:1;overflow-y:auto;padding:0 20px 20px;">
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Session Name</div>
+      <input id="sp-title" type="text" style="width:100%;border:1.5px solid #e4e2f0;border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;outline:none;color:#1E1E2E;" placeholder="Session name">
     </div>
-    <div class="ma">
-      <button class="mc" onclick="closeM()">Cancel</button>
-      <button class="md" id="mdel" onclick="delS()" style="display:none">🗑 Delete</button>
-      <button class="ms" onclick="saveS()">Save Session</button>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Start Time</div>
+      <input id="sp-start" type="time" step="300" style="width:100%;border:1.5px solid #e4e2f0;border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:#1E1E2E;">
     </div>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">End Time</div>
+      <input id="sp-end" type="time" step="300" style="width:100%;border:1.5px solid #e4e2f0;border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:#1E1E2E;">
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Host / Run By</div>
+      <input id="sp-host" type="text" style="width:100%;border:1.5px solid #e4e2f0;border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:#1E1E2E;" placeholder="e.g. Sarah Wu – Product Lead">
+    </div>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;">Day</div>
+      <select id="sp-day" style="width:100%;border:1.5px solid #e4e2f0;border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;color:#1E1E2E;background:white;">
+        <option value="0">Monday</option>
+        <option value="1">Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div style="font-size:9px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Session Type</div>
+      <div id="sp-types" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+    </div>
+
+    <!-- Action buttons -->
+    <button onclick="savePanel()" id="sp-save" style="width:100%;padding:11px;border:none;border-radius:9px;background:#6A2DD0;color:white;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:8px;">Save Changes</button>
+    <button onclick="deleteFromPanel()" style="width:100%;padding:11px;border:none;border-radius:9px;background:#fff2f2;color:#c0392b;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">🗑 Delete Session</button>
   </div>
 </div>
+<!-- Backdrop -->
+<div id="sp-backdrop" onclick="closePanel()" style="display:none;position:fixed;inset:0;z-index:799;"></div>
 
 <script>
 const DS=9*60,DE=17*60,SNAP=5,ROW_H=36;
@@ -238,7 +267,7 @@ const W1=[
   mk(0,9,0,10,0,'selfled','10am Start – no need to be in until 10:00'),
   mk(0,10,0,10,30,'company','Welcome! Show desk, get coffee, intro to office & manager','Clarissa Ishak – People & Culture'),
   mk(0,10,30,11,30,'company','Welcome to Lawpath! History, Vision & Company','Dom Woolrych – CEO & CO-FOUNDER'),
-  mk(0,12,0,13,0,'social','Team Meet & Team Lunch','Clarissa Ishak – People & Culture'),
+  mk(0,12,0,13,0,'social','Team Meet & Team Lunch'),
   mk(0,15,0,16,0,'company','Lawpath Today – Clients, Impact & Direction','Tom Willis – CMO & CO-FOUNDER'),
   mk(0,16,30,17,0,'manager','Manager End of Day Check In'),
   mk(1,9,0,10,0,'company',"Who's who in the Zoo!",'Clarissa Ishak – People & Culture Advisor'),
@@ -344,7 +373,7 @@ function buildCols(){
          !e.target.classList.contains('gl-h')&&!e.target.classList.contains('gl-hf'))return;
       const r=col.getBoundingClientRect();
       const y=e.clientY-r.top+document.getElementById('scr').scrollTop;
-      openM(null,di,cl(sn(y2m(y)),DS,DE-30));
+      openPanel({id:'__new__',day:di,start:cl(sn(y2m(y)),DS,DE-30),end:cl(sn(y2m(y)),DS,DE-30)+60,type:'company',title:'',ranBy:''});
     });
     ci.appendChild(col);
   });
@@ -360,20 +389,22 @@ function render(){
 function mkBlock(s){
   const t=TY[s.type]||TY.company;
   const top=m2y(s.start);
-  const h = m2y(s.end) - top; // exact height = duration, never inflated
-  const dur=s.end-s.start;
+  const h = m2y(s.end) - top;
   const el=document.createElement('div');
   el.className='sb';el.dataset.id=s.id;
   el.style.cssText=`top:${top}px;height:${h}px;background:${t.bg};border-left-color:${t.color};border-top-color:${t.bd};border-right-color:${t.bd};border-bottom-color:${t.bd};padding:3px 6px 10px;`;
   el.innerHTML=`
-    <div style="font-size:8.5px;font-weight:700;color:#18182a;line-height:1.2;margin-bottom:1px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${t.em} ${s.title}</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:2px;">
+      <div style="font-size:8.5px;font-weight:700;color:#18182a;line-height:1.2;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;flex:1;">${t.em} ${s.title}</div>
+      <button class="edit-btn" data-id="${s.id}" style="flex-shrink:0;background:${t.color};border:none;color:white;font-size:7px;font-weight:700;padding:1px 4px;border-radius:3px;cursor:pointer;line-height:1.4;margin-top:1px;">✏ Edit</button>
+    </div>
     ${s.ranBy?`<div style="font-size:7px;color:#555;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">👤 ${s.ranBy}</div>`:''}
     <div style="font-size:6.5px;font-weight:700;color:${t.color};opacity:.8;margin-top:1px;">${fmt(s.start)}–${fmt(s.end)}</div>
     <div class="rh"><div class="rb" style="background:${t.color}"></div></div>
   `;
   el.querySelector('.rh').addEventListener('mousedown',e=>{e.preventDefault();e.stopPropagation();startDrag(e,s,'resize');});
-  el.addEventListener('mousedown',e=>{if(e.target.closest('.rh'))return;e.preventDefault();e.stopPropagation();startDrag(e,s,'move');});
-  el.addEventListener('click',e=>{if(drag&&drag.moved)return;e.stopPropagation();openM(s,s.day,s.start);});
+  el.querySelector('.edit-btn').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();openPanel(s);});
+  el.addEventListener('mousedown',e=>{if(e.target.closest('.rh')||e.target.closest('.edit-btn'))return;e.preventDefault();e.stopPropagation();startDrag(e,s,'move');});
   return el;
 }
 
@@ -463,44 +494,79 @@ document.addEventListener('mouseup',e=>{
 
 function getS(id){return(DATA[WK]||[]).find(x=>x.id===id);}
 
-let mS=null,mDay=null,mType='company';
-function openM(s,day,def){
-  mS=s;mDay=day;mType=s?s.type:'company';
-  document.getElementById('mtit').textContent=s?'Edit Session':'Add Session';
-  document.getElementById('ft').value=s?.title||'';
-  document.getElementById('fr').value=s?.ranBy||'';
-  document.getElementById('fs').value=t2s(s?.start??def);
-  document.getElementById('fe').value=t2s(s?.end??(def+60));
-  document.getElementById('mdel').style.display=s?'block':'none';
-  buildTG();
-  document.getElementById('modal').style.display='flex';
-  setTimeout(()=>document.getElementById('ft').focus(),40);
+// ── SIDE PANEL ───────────────────────────────────────────────────────────────
+let panelSess=null, panelType='company';
+
+function openPanel(s){
+  panelSess=s; panelType=s.type;
+  var t=TY[s.type]||TY.company;
+  document.getElementById('sp-header').style.background=t.color;
+  document.getElementById('sp-em').textContent=t.em;
+  document.getElementById('sp-type').textContent=t.label;
+  document.getElementById('sp-title').value=s.title||'';
+  document.getElementById('sp-start').value=t2s(s.start);
+  document.getElementById('sp-end').value=t2s(s.end);
+  document.getElementById('sp-host').value=s.ranBy||'';
+  document.getElementById('sp-day').value=String(s.day);
+  document.getElementById('sp-save').style.background=t.color;
+  buildPanelTypes();
+  document.getElementById('side-panel').style.right='0';
+  document.getElementById('sp-backdrop').style.display='block';
+  setTimeout(function(){document.getElementById('sp-title').focus();},200);
 }
-function buildTG(){
-  const g=document.getElementById('tg');g.innerHTML='';
-  Object.entries(TY).forEach(([k,v])=>{
-    const b=document.createElement('button');b.className='tb';b.textContent=v.em+' '+v.label;
-    b.style.borderColor=mType===k?v.color:v.bd;b.style.background=mType===k?v.bg:'#fff';b.style.color=v.color;
-    b.onclick=()=>{mType=k;buildTG();};
+
+function closePanel(){
+  document.getElementById('side-panel').style.right='-360px';
+  document.getElementById('sp-backdrop').style.display='none';
+  panelSess=null;
+}
+
+function buildPanelTypes(){
+  var g=document.getElementById('sp-types'); g.innerHTML='';
+  Object.keys(TY).forEach(function(k){
+    var v=TY[k];
+    var b=document.createElement('button');
+    b.textContent=v.em+' '+v.label;
+    b.style.cssText='padding:5px 10px;border-radius:20px;font-size:10px;font-weight:700;cursor:pointer;border:1.5px solid '+(panelType===k?v.color:v.bd)+';background:'+(panelType===k?v.bg:'white')+';color:'+v.color+';font-family:DM Sans,sans-serif;';
+    b.onclick=function(){
+      panelType=k;
+      var t=TY[k];
+      document.getElementById('sp-header').style.background=t.color;
+      document.getElementById('sp-em').textContent=t.em;
+      document.getElementById('sp-type').textContent=t.label;
+      document.getElementById('sp-save').style.background=t.color;
+      buildPanelTypes();
+    };
     g.appendChild(b);
   });
 }
-function closeM(){document.getElementById('modal').style.display='none';mS=null;}
-function saveS(){
-  const title=document.getElementById('ft').value.trim();
-  if(!title){document.getElementById('ft').style.borderColor='#e53935';return;}
-  const st=s2t(document.getElementById('fs').value);
-  const en=s2t(document.getElementById('fe').value);
-  if(en<=st){document.getElementById('fe').style.borderColor='#e53935';return;}
-  if(mS){const s=getS(mS.id);if(s){saveHistory();s.title=title;s.ranBy=document.getElementById('fr').value;s.type=mType;s.start=st;s.end=en;}}
-  else{saveHistory();DATA[WK].push({id:uid(),day:mDay,start:st,end:en,type:mType,title,ranBy:document.getElementById('fr').value});}
-  closeM();render();toast(mS?'Updated ✓':'Session added ✓');
-}
-function delS(){
-  if(!mS)return;
+
+function savePanel(){
+  if(!panelSess)return;
+  var title=document.getElementById('sp-title').value.trim();
+  if(!title){document.getElementById('sp-title').style.borderColor='#e53935';return;}
+  var st=s2t(document.getElementById('sp-start').value);
+  var en=s2t(document.getElementById('sp-end').value);
+  if(en<=st){document.getElementById('sp-end').style.borderColor='#e53935';return;}
+  var day=parseInt(document.getElementById('sp-day').value);
+  var host=document.getElementById('sp-host').value;
   saveHistory();
-  DATA[WK]=DATA[WK].filter(x=>x.id!==mS.id);
-  closeM();render();toast('Deleted');
+  if(panelSess.id==='__new__'){
+    DATA[WK].push({id:uid(),day:day,start:st,end:en,type:panelType,title:title,ranBy:host});
+    toast('Session added ✓');
+  } else {
+    var s=getS(panelSess.id);
+    if(s){s.title=title;s.start=st;s.end=en;s.ranBy=host;s.type=panelType;s.day=day;}
+    toast('Updated ✓');
+  }
+  closePanel();render();
+}
+
+function deleteFromPanel(){
+  if(!panelSess)return;
+  saveHistory();
+  DATA[WK]=DATA[WK].filter(function(x){return x.id!==panelSess.id;});
+  closePanel();render();toast('Deleted');
 }
 
 function sw(w,btn){
@@ -661,9 +727,8 @@ function xpdf(){
 let tT;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),2200);}
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closeM();
-  if(e.key==='Enter'&&document.getElementById('modal').style.display!=='none'&&e.target.tagName!=='TEXTAREA')saveS();
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape')closePanel();
   if((e.ctrlKey||e.metaKey)&&e.key==='z'&&!e.shiftKey){e.preventDefault();undo();}
   if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.key==='z'&&e.shiftKey))){e.preventDefault();redo();}
 });
